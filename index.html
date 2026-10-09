@@ -9,7 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: tek sütun, sola yaslı; "Ö + S = OS+" denklemi ve Qrocket kartı iki güçlü an, gerisi sakin */
+/* Layout: hero iki sütun — kısa sözcük işareti ve üç ürünlük vitrin.
+   Qrocket kartında örnek sohbet, diğer kartlarda kendi yüzeyi.
+   İlkeler numaralı sıra, ekip tek panel, iletişim kapanış bandı. */
 :root{
   --bg:#F2F3EE; --surface:#E7E9E1; --fg:#14171A; --muted:#5A6058;
   --line:#D3D6CC; --accent:#2340E0; --on-accent:#FFFFFF;
@@ -43,15 +45,26 @@ header.top{display:flex;justify-content:space-between;align-items:center;gap:16p
 .mark{font:800 1.35rem/1 var(--f-display);letter-spacing:-.02em;text-decoration:none}
 .mark small{font-weight:500;color:var(--muted);margin-left:2px}
 nav.top-nav{display:flex;gap:20px;flex-wrap:wrap}
-nav.top-nav a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--muted)}
+nav.top-nav a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--muted);padding-block:6px}
 nav.top-nav a:hover{color:var(--fg)}
 
-.hero{padding-block:clamp(56px,10vw,112px) clamp(48px,8vw,88px)}
-.equation{font:800 clamp(3.4rem,13vw,8.5rem)/.9 var(--f-display);letter-spacing:-.045em;margin:0 0 28px;display:flex;flex-wrap:wrap;align-items:baseline;gap:.12em .22em}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(28px,5vw,56px);align-items:center;padding-block:clamp(40px,7vw,80px) clamp(36px,6vw,72px)}
+.hero-copy{min-width:0}
+.equation{font:800 clamp(2rem,4.4vw,3.15rem)/.95 var(--f-display);letter-spacing:-.04em;margin:0 0 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:.12em .22em}
 .equation .op{font-weight:500;color:var(--muted)}
 .equation .res{color:var(--accent)}
-.hero h1{font:700 clamp(1.5rem,3.4vw,2.25rem)/1.2 var(--f-display);letter-spacing:-.02em;max-width:24ch;margin:0 0 16px;text-wrap:balance}
-.hero p{max-width:58ch;color:var(--muted);margin:0}
+.hero h1{font:700 clamp(1.7rem,3.2vw,2.45rem)/1.15 var(--f-display);letter-spacing:-.025em;max-width:18ch;margin:0 0 16px;text-wrap:balance}
+.hero p{max-width:46ch;color:var(--muted);margin:0}
+
+.vitrine{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.82fr);grid-template-rows:1fr 1fr;gap:12px;min-height:400px;align-self:stretch}
+.tile{position:relative;display:grid;place-items:center;min-width:0;min-height:0;border-radius:22px;overflow:hidden;text-decoration:none;box-shadow:0 18px 40px -28px rgba(20,23,26,.55);transition:transform .2s ease}
+.tile:hover{transform:translateY(-3px)}
+.tile .cap{position:absolute;left:12px;bottom:12px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.02em;color:#F6F2EA;background:rgba(12,14,18,.55);border-radius:999px;padding:4px 10px}
+.tile.ns{grid-row:1 / span 2;background:#2A1424;display:block}
+.tile.ns img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block}
+.tile.q{background:#1E2433}
+.tile.mp{background:#5A1424}
+.tile svg{width:64px;height:64px}
 
 section.block{padding-block:clamp(48px,7vw,80px);border-top:1px solid var(--line)}
 .block-head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;margin-bottom:32px}
@@ -76,6 +89,11 @@ section.block{padding-block:clamp(48px,7vw,80px);border-top:1px solid var(--line
 .langs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
 .langs li{font-family:var(--f-mono);font-size:.82rem;padding:5px 11px;border:1px solid var(--q-line);border-radius:999px}
 .langs li[lang="ar"],.langs li[lang="ru"]{font-family:var(--f-body);font-size:.9rem}
+.chat{display:grid;gap:8px;margin:0 0 18px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--q-line)}
+.chat .mono{margin:0 0 2px}
+.bubble{max-width:92%;margin:0;padding:9px 12px;border-radius:14px;font-size:.92rem;line-height:1.45}
+.bubble.guest{justify-self:end;background:var(--q-fg);color:var(--q-ink);border-bottom-right-radius:4px}
+.bubble.ai{justify-self:start;background:rgba(238,122,58,.16);color:var(--q-fg);border-bottom-left-radius:4px}
 .facts{display:grid;gap:0;margin:0;align-content:start}
 .facts div{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:16px;padding-block:14px;border-bottom:1px solid var(--q-line)}
 .facts div:first-child{border-top:1px solid var(--q-line)}
@@ -89,49 +107,75 @@ section.block{padding-block:clamp(48px,7vw,80px);border-top:1px solid var(--line
 .qctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
 .qctas .qcta{margin-top:0}
 
-.others{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.5vw,24px);margin-top:clamp(16px,2.5vw,24px)}
-.card{display:grid;gap:12px;align-content:start;border-radius:24px;padding:clamp(24px,3.5vw,40px);text-decoration:none;min-width:0;position:relative;overflow:hidden;transition:transform .2s ease}
+.others{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.5vw,24px);margin-top:clamp(16px,2.5vw,24px);align-items:start}
+.card{display:flex;flex-direction:column;gap:14px;border-radius:24px;padding:clamp(24px,3.5vw,40px);text-decoration:none;min-width:0;position:relative;overflow:hidden;transition:transform .2s ease}
 .card:hover{transform:translateY(-3px)}
 .card .top{display:flex;align-items:center;gap:12px}
 .card .top .ic{width:48px;height:48px;flex:none;border-radius:12px;display:block}
 .card h3{font:800 clamp(1.8rem,3.6vw,2.4rem)/1 var(--f-display);letter-spacing:-.03em;margin:0}
 .card .kind{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
 .card p{margin:0;max-width:44ch}
-.card .go{margin-top:8px;font-weight:600}
+.card .go{font-weight:600}
 .card.mp{background:#5A1424;color:#FCE6B8}
 .card.mp p{color:rgba(252,230,184,.8)}
 .card.mp .go{color:#F2A93B}
 .card.ns{background:#2A1424;color:#F4E8E4}
 .card.ns p{color:#BFA6B6}
 .card.ns .go{color:#E5A93A}
+.lesson{display:grid;gap:8px;background:#FDF7EC;color:#2A1A14;border-radius:16px;padding:16px 16px 14px}
+.lesson .k{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#7A2034}
+.lesson strong{font:700 1.2rem/1.2 var(--f-display);letter-spacing:-.02em}
+.lesson .row{display:flex;justify-content:space-between;gap:12px;font-size:.82rem;color:#6B5A50}
+.lesson .bar{height:6px;border-radius:4px;background:#EBDBC0;overflow:hidden}
+.lesson .bar i{display:block;height:100%;width:62%;background:#E8960F}
+.shot{border-radius:16px;overflow:hidden;height:220px;background:#1A0C16;border:1px solid rgba(255,255,255,.08)}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:center 16%;display:block}
 
 .principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,36px);list-style:none;padding:0;margin:0}
-.principles li{min-width:0}
-.principles .sym{font:800 2.2rem/1 var(--f-display);color:var(--accent);display:block;margin-bottom:14px}
-.principles h3{font:700 1.2rem/1.3 var(--f-display);margin:0 0 6px}
+.principles li{min-width:0;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:8px;align-content:start}
+.principles .num{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;color:var(--accent)}
+.principles h3{font:700 1.2rem/1.3 var(--f-display);margin:0}
 .principles p{margin:0;color:var(--muted)}
 
-.team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px)}
-.person{display:flex;gap:20px;align-items:flex-start;min-width:0}
+.team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.person{display:flex;gap:20px;align-items:flex-start;min-width:0;padding:clamp(22px,3vw,36px)}
+.person + .person{border-left:1px solid var(--line)}
 .initial{flex:none;width:72px;height:72px;border-radius:18px;background:var(--fg);color:var(--bg);display:grid;place-items:center;font:800 1.6rem/1 var(--f-display)}
 .person h3{font:700 1.35rem/1.2 var(--f-display);margin:2px 0 4px}
 .person p{margin:6px 0 0;color:var(--muted)}
 
+#iletisim{border-top:0;padding-top:0}
+.band{background:var(--fg);color:var(--bg);border-radius:28px;padding:clamp(28px,5vw,52px)}
+.band .block-head{margin-bottom:22px}
+.band .block-head h2{color:inherit}
+.band .mono,.band .contact-note{color:color-mix(in srgb, var(--bg) 68%, transparent)}
 .contact{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
 .email{font:700 clamp(1.4rem,4.4vw,2.4rem)/1.1 var(--f-display);letter-spacing:-.02em;user-select:all;word-break:break-all}
 .btn{font:600 .95rem/1 var(--f-body);padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--on-accent);cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
-.contact-note{color:var(--muted);margin:16px 0 0;max-width:58ch}
+.contact-note{margin:16px 0 0;max-width:58ch}
 
 footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;color:var(--muted);font-size:.92rem}
 footer nav{display:flex;gap:20px;flex-wrap:wrap}
 
+@media (prefers-reduced-motion:reduce){
+  .tile,.card{transition:none}
+}
 @media (max-width:760px){
-  .block-head,.product,.team,.others{grid-template-columns:minmax(0,1fr)}
+  .hero,.block-head,.product,.team,.others{grid-template-columns:minmax(0,1fr)}
+  .hero{align-items:start}
+  .vitrine{min-height:300px;max-width:560px}
   .principles{grid-template-columns:minmax(0,1fr)}
   .block-head{gap:8px}
+  .person + .person{border-left:0;border-top:1px solid var(--line)}
 }
-@media (max-width:420px){ nav.top-nav{display:none} .facts div{grid-template-columns:minmax(0,1fr);gap:2px} }
+@media (max-width:420px){
+  header.top{flex-wrap:wrap;row-gap:8px}
+  nav.top-nav{gap:4px 16px}
+  .facts div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .vitrine{min-height:260px;gap:8px}
+  .tile svg{width:48px;height:48px}
+}
 </style>
 </head>
 <body>
@@ -146,9 +190,25 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
   </header>
 
   <section class="hero">
-    <p class="equation" aria-label="OS artı studio"><span class="res">OS+</span><span class="op">studio</span></p>
-    <h1>İstanbul'da iki kişilik bir yazılım stüdyosu.</h1>
-    <p>İşletmeler ve insanlar için yapay zekâ destekli, çok dilli ürünler geliştiriyoruz: restoranlar için bir AI garson platformu, günlük öğrenme uygulamaları ve daha fazlası.</p>
+    <div class="hero-copy">
+      <p class="equation" aria-label="OS artı studio"><span class="res">OS+</span><span class="op">studio</span></p>
+      <h1>İstanbul'da iki kişilik bir yazılım stüdyosu.</h1>
+      <p>İşletmeler ve insanlar için yapay zekâ destekli, çok dilli ürünler geliştiriyoruz: restoranlar için bir AI garson platformu, günlük öğrenme uygulamaları ve daha fazlası.</p>
+    </div>
+    <div class="vitrine">
+      <a class="tile ns" href="nestor/index.html">
+        <img src="nestor/img/02-home.jpg" alt="" width="540" height="960">
+        <span class="cap">Nestor</span>
+      </a>
+      <a class="tile q" href="qrocket/index.html">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6A066"/><stop offset=".5" stop-color="#EE7A3A"/><stop offset="1" stop-color="#C95A22"/></linearGradient></defs><rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="none" stroke="url(#lgv)" stroke-width="1.6"/><rect x="7" y="7" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="9.3" width="2.4" height="2.4" fill="#1E2433"/><rect x="7" y="18" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="20.3" width="2.4" height="2.4" fill="#1E2433"/><path d="M22 6c3 2.5 4 6 3 10l-3 3-3-3c-1-4 0-7.5 3-10z" fill="url(#lgv)"/><path d="M20.5 21l1.5 5 1.5-5z" fill="#D9A441"/></svg>
+        <span class="cap">Qrocket</span>
+      </a>
+      <a class="tile mp" href="muslimplus/index.html">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8960F"/><path d="M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z" fill="#5A1424"/><g fill="#5A1424" fill-opacity=".55"><path d="M72 19l5 5-5 5-5-5z"/><path d="M72 31l5 5-5 5-5-5z"/><path d="M72 43l5 5-5 5-5-5z"/><path d="M72 55l5 5-5 5-5-5z"/><path d="M72 67l5 5-5 5-5-5z"/></g></svg>
+        <span class="cap">MuslimPlus</span>
+      </a>
+    </div>
   </section>
 
   <section class="block" id="urunler">
@@ -180,6 +240,11 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
         </ul>
       </div>
       <div>
+        <div class="chat" aria-label="Örnek sohbet">
+          <p class="mono">Örnek sohbet</p>
+          <p class="bubble guest" dir="auto">Is the İskender spicy?</p>
+          <p class="bubble ai" dir="auto">No, it isn't spicy. It's served with tomato sauce, butter and yoghurt.</p>
+        </div>
         <dl class="facts">
           <div><dt class="mono">Durum</dt><dd class="status">Faz 1 geliştiriliyor</dd></div>
           <div><dt class="mono">Aşama</dt><dd>Pilot işletmelerle birlikte</dd></div>
@@ -196,6 +261,12 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
           <svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8960F"/><path d="M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z" fill="#5A1424"/><g fill="#5A1424" fill-opacity=".55"><path d="M72 19l5 5-5 5-5-5z"/><path d="M72 31l5 5-5 5-5-5z"/><path d="M72 43l5 5-5 5-5-5z"/><path d="M72 55l5 5-5 5-5-5z"/><path d="M72 67l5 5-5 5-5-5z"/></g></svg>
           <div><span class="kind">Mobil uygulama · Eğitim</span><h3>MuslimPlus</h3></div>
         </div>
+        <div class="lesson" aria-hidden="true">
+          <span class="k">Bugünün dersi · Fıkıh</span>
+          <strong>Abdestin farzları</strong>
+          <div class="row"><span>3 / 5 bölüm</span><span>4 dk</span></div>
+          <div class="bar"><i></i></div>
+        </div>
         <p>Kısa günlük derslerle İslami bilgiyi adım adım öğreten, namaz takibi de içinde olan bir öğrenme uygulaması. Türkçe, Almanca, Arapça ve İngilizce.</p>
         <span class="go">Uygulamayı inceleyin →</span>
       </a>
@@ -203,6 +274,9 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
         <div class="top">
           <img class="ic" src="nestor/img/icon.png" alt="" width="44" height="44">
           <div><span class="kind">Mobil uygulama · Kişisel gelişim</span><h3>Nestor</h3></div>
+        </div>
+        <div class="shot">
+          <img src="nestor/img/02-home.jpg" alt="" width="540" height="960">
         </div>
         <p>Batı felsefesi ve edebiyatının klasik metinlerinden günde 15 dakikalık derslerle 90 günlük bir yolculuk: oku, anla, bugün bir şey yap. ABD pazarı için, dört dilde.</p>
         <span class="go">Uygulamayı inceleyin →</span>
@@ -217,17 +291,17 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
     </div>
     <ul class="principles">
       <li>
-        <span class="sym" aria-hidden="true">→</span>
+        <span class="num" aria-hidden="true">01</span>
         <h3>Sahayla birlikte geliştiriyoruz</h3>
         <p>Ürünü masa başında değil, gerçek işletmelerle pilot yaparak şekillendiriyoruz.</p>
       </li>
       <li>
-        <span class="sym" aria-hidden="true">≠</span>
+        <span class="num" aria-hidden="true">02</span>
         <h3>Veri satmıyoruz</h3>
         <p>Sadece ürünün çalışması için gereken veriyi işliyor, hiçbirini üçüncü taraflara satmıyoruz.</p>
       </li>
       <li>
-        <span class="sym" aria-hidden="true">×5</span>
+        <span class="num" aria-hidden="true">03</span>
         <h3>Çok dilli kuruyoruz</h3>
         <p>Ürünlerimizi en baştan birden fazla dilde, yerli ve yabancı kullanıcıyı birlikte düşünerek tasarlıyoruz.</p>
       </li>
@@ -260,15 +334,17 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
   </section>
 
   <section class="block" id="iletisim">
-    <div class="block-head">
-      <span class="mono">İletişim</span>
-      <h2>Bize yazın</h2>
+    <div class="band">
+      <div class="block-head">
+        <span class="mono">İletişim</span>
+        <h2>Bize yazın</h2>
+      </div>
+      <div class="contact">
+        <span class="email" id="email">info@osplusstudio.com</span>
+        <button class="btn" id="copy" type="button">Adresi kopyala</button>
+      </div>
+      <p class="contact-note">Qrocket pilot programı, içerik iş birliği veya ürünlerimizle ilgili sorularınız için. Genelde birkaç iş günü içinde dönüş yapıyoruz.</p>
     </div>
-    <div class="contact">
-      <span class="email" id="email">info@osplusstudio.com</span>
-      <button class="btn" id="copy" type="button">Adresi kopyala</button>
-    </div>
-    <p class="contact-note">Qrocket pilot programı, içerik iş birliği veya ürünlerimizle ilgili sorularınız için. Genelde birkaç iş günü içinde dönüş yapıyoruz.</p>
   </section>
 
   <footer>
