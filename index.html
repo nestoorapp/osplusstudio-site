@@ -9,8 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: hero iki sütun — kısa sözcük işareti ve üç ürünlük vitrin.
-   Qrocket kartında örnek sohbet, diğer kartlarda kendi yüzeyi.
+/* Layout: giriş yalnız metin. Ürün yüzleri aşağıdaki kartlarda.
    İlkeler numaralı sıra, ekip tek panel, iletişim kapanış bandı. */
 :root{
   --bg:#F2F3EE; --surface:#E7E9E1; --fg:#14171A; --muted:#5A6058;
@@ -48,23 +47,12 @@ nav.top-nav{display:flex;gap:20px;flex-wrap:wrap}
 nav.top-nav a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--muted);padding-block:6px}
 nav.top-nav a:hover{color:var(--fg)}
 
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(28px,5vw,56px);align-items:center;padding-block:clamp(40px,7vw,80px) clamp(36px,6vw,72px)}
-.hero-copy{min-width:0}
+.hero{padding-block:clamp(56px,9vw,104px) clamp(40px,7vw,80px)}
 .equation{font:800 clamp(2rem,4.4vw,3.15rem)/.95 var(--f-display);letter-spacing:-.04em;margin:0 0 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:.12em .22em}
 .equation .op{font-weight:500;color:var(--muted)}
 .equation .res{color:var(--accent)}
-.hero h1{font:700 clamp(1.7rem,3.2vw,2.45rem)/1.15 var(--f-display);letter-spacing:-.025em;max-width:18ch;margin:0 0 16px;text-wrap:balance}
-.hero p{max-width:46ch;color:var(--muted);margin:0}
-
-.vitrine{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.82fr);grid-template-rows:1fr 1fr;gap:12px;min-height:400px;align-self:stretch}
-.tile{position:relative;display:grid;place-items:center;min-width:0;min-height:0;border-radius:22px;overflow:hidden;text-decoration:none;box-shadow:0 18px 40px -28px rgba(20,23,26,.55);transition:transform .2s ease}
-.tile:hover{transform:translateY(-3px)}
-.tile .cap{position:absolute;left:12px;bottom:12px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.02em;color:#F6F2EA;background:rgba(12,14,18,.55);border-radius:999px;padding:4px 10px}
-.tile.ns{grid-row:1 / span 2;background:#2A1424;display:block}
-.tile.ns img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block}
-.tile.q{background:#1E2433}
-.tile.mp{background:#5A1424}
-.tile svg{width:64px;height:64px}
+.hero h1{font:700 clamp(1.7rem,3.2vw,2.45rem)/1.15 var(--f-display);letter-spacing:-.025em;max-width:22ch;margin:0 0 16px;text-wrap:balance}
+.hero p{max-width:58ch;color:var(--muted);margin:0}
 
 section.block{padding-block:clamp(48px,7vw,80px);border-top:1px solid var(--line)}
 .block-head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;margin-bottom:32px}
@@ -159,12 +147,10 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;fle
 footer nav{display:flex;gap:20px;flex-wrap:wrap}
 
 @media (prefers-reduced-motion:reduce){
-  .tile,.card{transition:none}
+  .card{transition:none}
 }
 @media (max-width:760px){
-  .hero,.block-head,.product,.team,.others{grid-template-columns:minmax(0,1fr)}
-  .hero{align-items:start}
-  .vitrine{min-height:300px;max-width:560px}
+  .block-head,.product,.team,.others{grid-template-columns:minmax(0,1fr)}
   .principles{grid-template-columns:minmax(0,1fr)}
   .block-head{gap:8px}
   .person + .person{border-left:0;border-top:1px solid var(--line)}
@@ -173,8 +159,6 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
   header.top{flex-wrap:wrap;row-gap:8px}
   nav.top-nav{gap:4px 16px}
   .facts div{grid-template-columns:minmax(0,1fr);gap:2px}
-  .vitrine{min-height:260px;gap:8px}
-  .tile svg{width:48px;height:48px}
 }
 </style>
 </head>
@@ -190,25 +174,9 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
   </header>
 
   <section class="hero">
-    <div class="hero-copy">
-      <p class="equation" aria-label="OS artı studio"><span class="res">OS+</span><span class="op">studio</span></p>
-      <h1>İstanbul'da iki kişilik bir yazılım stüdyosu.</h1>
-      <p>İşletmeler ve insanlar için yapay zekâ destekli, çok dilli ürünler geliştiriyoruz: restoranlar için bir AI garson platformu, günlük öğrenme uygulamaları ve daha fazlası.</p>
-    </div>
-    <div class="vitrine">
-      <a class="tile ns" href="nestor/index.html">
-        <img src="nestor/img/02-home.jpg" alt="" width="540" height="960">
-        <span class="cap">Nestor</span>
-      </a>
-      <a class="tile q" href="qrocket/index.html">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6A066"/><stop offset=".5" stop-color="#EE7A3A"/><stop offset="1" stop-color="#C95A22"/></linearGradient></defs><rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="none" stroke="url(#lgv)" stroke-width="1.6"/><rect x="7" y="7" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="9.3" width="2.4" height="2.4" fill="#1E2433"/><rect x="7" y="18" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="20.3" width="2.4" height="2.4" fill="#1E2433"/><path d="M22 6c3 2.5 4 6 3 10l-3 3-3-3c-1-4 0-7.5 3-10z" fill="url(#lgv)"/><path d="M20.5 21l1.5 5 1.5-5z" fill="#D9A441"/></svg>
-        <span class="cap">Qrocket</span>
-      </a>
-      <a class="tile mp" href="muslimplus/index.html">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8960F"/><path d="M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z" fill="#5A1424"/><g fill="#5A1424" fill-opacity=".55"><path d="M72 19l5 5-5 5-5-5z"/><path d="M72 31l5 5-5 5-5-5z"/><path d="M72 43l5 5-5 5-5-5z"/><path d="M72 55l5 5-5 5-5-5z"/><path d="M72 67l5 5-5 5-5-5z"/></g></svg>
-        <span class="cap">MuslimPlus</span>
-      </a>
-    </div>
+    <p class="equation" aria-label="OS artı studio"><span class="res">OS+</span><span class="op">studio</span></p>
+    <h1>İstanbul'da iki kişilik bir yazılım stüdyosu.</h1>
+    <p>İşletmeler ve insanlar için yapay zekâ destekli, çok dilli ürünler geliştiriyoruz: restoranlar için bir AI garson platformu, günlük öğrenme uygulamaları ve daha fazlası.</p>
   </section>
 
   <section class="block" id="urunler">
