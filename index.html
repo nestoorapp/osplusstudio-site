@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OSplusstudio</title>
+<meta name="description" content="OSplusstudio, İstanbul'da iki kişilik bir yazılım stüdyosu. Restoran ve kafeler için yapay zekâlı QR platformu Qrocket'ı geliştiriyoruz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tek sütun, sola yaslı; "Ö + S = OS+" denklemi ve Qrocket kartı iki güçlü an, gerisi sakin */
+:root{
+  --bg:#F2F3EE; --surface:#E7E9E1; --fg:#14171A; --muted:#5A6058;
+  --line:#D3D6CC; --accent:#2340E0; --on-accent:#FFFFFF;
+  --q:#EE7A3A; --q-ink:#1E2433; --q-bg:#1E2433; --q-fg:#F6F2EA; --q-muted:#A9AEBB; --q-line:rgba(255,255,255,.13);
+  --f-display:"Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101311; --surface:#1A1E1B; --fg:#ECEEE8; --muted:#9BA197;
+    --line:#2B302C; --accent:#8095FF; --on-accent:#0B0E1F;
+    --q-bg:#1C212D; --q-line:rgba(255,255,255,.1); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101311; --surface:#1A1E1B; --fg:#ECEEE8; --muted:#9BA197;
+  --line:#2B302C; --accent:#8095FF; --on-accent:#0B0E1F;
+  --q-bg:#1C212D; --q-line:rgba(255,255,255,.1); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.0625rem/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.plus{color:var(--accent)}
+
+header.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:24px;border-bottom:1px solid var(--line)}
+.mark{font:800 1.35rem/1 var(--f-display);letter-spacing:-.02em;text-decoration:none}
+.mark small{font-weight:500;color:var(--muted);margin-left:2px}
+nav.top-nav{display:flex;gap:20px;flex-wrap:wrap}
+nav.top-nav a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--muted)}
+nav.top-nav a:hover{color:var(--fg)}
+
+.hero{padding-block:clamp(56px,10vw,112px) clamp(48px,8vw,88px)}
+.equation{font:800 clamp(3.4rem,13vw,8.5rem)/.9 var(--f-display);letter-spacing:-.045em;margin:0 0 28px;display:flex;flex-wrap:wrap;align-items:baseline;gap:.12em .22em}
+.equation .op{font-weight:500;color:var(--muted)}
+.equation .res{color:var(--accent)}
+.hero h1{font:700 clamp(1.5rem,3.4vw,2.25rem)/1.2 var(--f-display);letter-spacing:-.02em;max-width:24ch;margin:0 0 16px;text-wrap:balance}
+.hero p{max-width:58ch;color:var(--muted);margin:0}
+
+section.block{padding-block:clamp(48px,7vw,80px);border-top:1px solid var(--line)}
+.block-head{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;margin-bottom:32px}
+.block-head h2{font:700 clamp(1.6rem,3vw,2rem)/1.15 var(--f-display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+
+/* Qrocket: stüdyonun ana ürünü, kendi marka rengiyle */
+.product{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);background:var(--q-bg);color:var(--q-fg);border-radius:24px;padding:clamp(24px,4.5vw,52px);position:relative;overflow:hidden}
+.product::before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-200px;border-radius:50%;background:radial-gradient(circle,rgba(238,122,58,.28),transparent 65%);pointer-events:none}
+.product > *{position:relative;min-width:0}
+.product .mono{color:var(--q-muted)}
+.flag{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#16120B;background:var(--q);border-radius:999px;padding:5px 12px;margin-bottom:18px}
+.qhead{display:flex;align-items:center;gap:14px;margin:6px 0 10px}
+.qhead svg{width:52px;height:52px;flex:none}
+.product h3{font:800 clamp(2.4rem,6vw,3.6rem)/1 var(--f-display);letter-spacing:-.035em;margin:0}
+.product .tagline{font:700 clamp(1.15rem,2.2vw,1.4rem)/1.3 var(--f-display);margin:0 0 14px;max-width:30ch;text-wrap:balance}
+.product .tagline em{font-style:normal;color:var(--q)}
+.product p{margin:0 0 20px;max-width:52ch;color:var(--q-muted)}
+.product p.tagline{color:var(--q-fg);margin-bottom:14px}
+.feat{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:10px}
+.feat li{display:flex;gap:12px;align-items:flex-start}
+.feat li::before{content:"";flex:none;width:8px;height:8px;margin-top:.55em;border-radius:2px;background:var(--q)}
+.langs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.langs li{font-family:var(--f-mono);font-size:.82rem;padding:5px 11px;border:1px solid var(--q-line);border-radius:999px}
+.langs li[lang="ar"],.langs li[lang="ru"]{font-family:var(--f-body);font-size:.9rem}
+.facts{display:grid;gap:0;margin:0;align-content:start}
+.facts div{display:grid;grid-template-columns:minmax(0,8.5rem) minmax(0,1fr);gap:16px;padding-block:14px;border-bottom:1px solid var(--q-line)}
+.facts div:first-child{border-top:1px solid var(--q-line)}
+.facts dt{margin:0}
+.facts dd{margin:0;font-weight:500}
+.status{display:inline-flex;align-items:center;gap:8px}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#7FD39B;box-shadow:0 0 0 4px rgba(127,211,155,.18)}
+.qcta{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font:600 .95rem/1 var(--f-body);padding:13px 20px;border-radius:999px;background:var(--q);color:#16120B;text-decoration:none}
+.qcta:hover{filter:brightness(1.08)}
+.qcta.ghost{background:transparent;color:var(--q-fg);box-shadow:inset 0 0 0 1px var(--q-line)}
+.qctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.qctas .qcta{margin-top:0}
+
+.others{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.5vw,24px);margin-top:clamp(16px,2.5vw,24px)}
+.card{display:grid;gap:12px;align-content:start;border-radius:24px;padding:clamp(24px,3.5vw,40px);text-decoration:none;min-width:0;position:relative;overflow:hidden;transition:transform .2s ease}
+.card:hover{transform:translateY(-3px)}
+.card .top{display:flex;align-items:center;gap:12px}
+.card .top .ic{width:48px;height:48px;flex:none;border-radius:12px;display:block}
+.card h3{font:800 clamp(1.8rem,3.6vw,2.4rem)/1 var(--f-display);letter-spacing:-.03em;margin:0}
+.card .kind{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.card p{margin:0;max-width:44ch}
+.card .go{margin-top:8px;font-weight:600}
+.card.mp{background:#5A1424;color:#FCE6B8}
+.card.mp p{color:rgba(252,230,184,.8)}
+.card.mp .go{color:#F2A93B}
+.card.ns{background:#2A1424;color:#F4E8E4}
+.card.ns p{color:#BFA6B6}
+.card.ns .go{color:#E5A93A}
+
+.principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,36px);list-style:none;padding:0;margin:0}
+.principles li{min-width:0}
+.principles .sym{font:800 2.2rem/1 var(--f-display);color:var(--accent);display:block;margin-bottom:14px}
+.principles h3{font:700 1.2rem/1.3 var(--f-display);margin:0 0 6px}
+.principles p{margin:0;color:var(--muted)}
+
+.team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px)}
+.person{display:flex;gap:20px;align-items:flex-start;min-width:0}
+.initial{flex:none;width:72px;height:72px;border-radius:18px;background:var(--fg);color:var(--bg);display:grid;place-items:center;font:800 1.6rem/1 var(--f-display)}
+.person h3{font:700 1.35rem/1.2 var(--f-display);margin:2px 0 4px}
+.person p{margin:6px 0 0;color:var(--muted)}
+
+.contact{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.email{font:700 clamp(1.4rem,4.4vw,2.4rem)/1.1 var(--f-display);letter-spacing:-.02em;user-select:all;word-break:break-all}
+.btn{font:600 .95rem/1 var(--f-body);padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.contact-note{color:var(--muted);margin:16px 0 0;max-width:58ch}
+
+footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;color:var(--muted);font-size:.92rem}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .block-head,.product,.team,.others{grid-template-columns:minmax(0,1fr)}
+  .principles{grid-template-columns:minmax(0,1fr)}
+  .block-head{gap:8px}
+}
+@media (max-width:420px){ nav.top-nav{display:none} .facts div{grid-template-columns:minmax(0,1fr);gap:2px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#">OS<span class="plus">+</span><small>studio</small></a>
+    <nav class="top-nav" aria-label="Sayfa içi">
+      <a href="#urunler">Ürünler</a>
+      <a href="#ekip">Ekip</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <p class="equation" aria-label="OS artı studio"><span class="res">OS+</span><span class="op">studio</span></p>
+    <h1>İstanbul'da iki kişilik bir yazılım stüdyosu.</h1>
+    <p>İşletmeler ve insanlar için yapay zekâ destekli, çok dilli ürünler geliştiriyoruz: restoranlar için bir AI garson platformu, günlük öğrenme uygulamaları ve daha fazlası.</p>
+  </section>
+
+  <section class="block" id="urunler">
+    <div class="block-head">
+      <span class="mono">Ürünler</span>
+      <h2>Yaptığımız işler</h2>
+    </div>
+    <article class="product">
+      <div>
+        <span class="flag">Ana ürün · Pilot aşamasında</span>
+        <div class="qhead">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6A066"/><stop offset=".5" stop-color="#EE7A3A"/><stop offset="1" stop-color="#C95A22"/></linearGradient></defs><rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="none" stroke="url(#lg)" stroke-width="1.6"/><rect x="7" y="7" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="9.3" width="2.4" height="2.4" fill="#1E2433"/><rect x="7" y="18" width="7" height="7" rx="1.5" fill="#F6F2EA"/><rect x="9.3" y="20.3" width="2.4" height="2.4" fill="#1E2433"/><path d="M22 6c3 2.5 4 6 3 10l-3 3-3-3c-1-4 0-7.5 3-10z" fill="url(#lg)"/><path d="M20.5 21l1.5 5 1.5-5z" fill="#D9A441"/></svg>
+          <h3>Qrocket</h3>
+        </div>
+        <p class="tagline">Restoran ve kafeler için <em>yapay zekâlı</em> QR platformu.</p>
+        <p>Misafir masadaki QR kodu okutur; menüyü görür, AI garsonla kendi dilinde konuşur, siparişini verir ve hesabı masada öder. İşletme de her şeyi tek panelden yönetir.</p>
+        <ul class="feat">
+          <li>Kurallara uygun dijital menü ve fiyat listesi</li>
+          <li>Menüyü anlatan, alerjen sorularını yanıtlayan ve sipariş alan AI garson</li>
+          <li>Masada ödeme, hesap bölme ve bahşiş</li>
+          <li>Misafir geri bildirimi ve işletme paneli</li>
+        </ul>
+        <ul class="langs" aria-label="AI garsonun konuştuğu diller">
+          <li lang="tr">Türkçe</li>
+          <li lang="en">English</li>
+          <li lang="ar" dir="rtl">العربية</li>
+          <li lang="ru">Русский</li>
+          <li lang="de">Deutsch</li>
+        </ul>
+      </div>
+      <div>
+        <dl class="facts">
+          <div><dt class="mono">Durum</dt><dd class="status">Faz 1 geliştiriliyor</dd></div>
+          <div><dt class="mono">Aşama</dt><dd>Pilot işletmelerle birlikte</dd></div>
+          <div><dt class="mono">Kimler için</dt><dd>Restoran, kafe, bar ve pub</dd></div>
+          <div><dt class="mono">Dil</dt><dd>5 dilde AI garson</dd></div>
+        </dl>
+        <div class="qctas"><a class="qcta" href="qrocket/index.html">Qrocket'ı inceleyin →</a><a class="qcta ghost" href="qrocket/index.html#katil">Pilot işletme olun</a></div>
+      </div>
+    </article>
+
+    <div class="others">
+      <a class="card mp" href="muslimplus/index.html">
+        <div class="top">
+          <svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8960F"/><path d="M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z" fill="#5A1424"/><g fill="#5A1424" fill-opacity=".55"><path d="M72 19l5 5-5 5-5-5z"/><path d="M72 31l5 5-5 5-5-5z"/><path d="M72 43l5 5-5 5-5-5z"/><path d="M72 55l5 5-5 5-5-5z"/><path d="M72 67l5 5-5 5-5-5z"/></g></svg>
+          <div><span class="kind">Mobil uygulama · Eğitim</span><h3>MuslimPlus</h3></div>
+        </div>
+        <p>Kısa günlük derslerle İslami bilgiyi adım adım öğreten, namaz takibi de içinde olan bir öğrenme uygulaması. Türkçe, Almanca, Arapça ve İngilizce.</p>
+        <span class="go">Uygulamayı inceleyin →</span>
+      </a>
+      <a class="card ns" href="nestor/index.html">
+        <div class="top">
+          <img class="ic" src="nestor/img/icon.png" alt="" width="44" height="44">
+          <div><span class="kind">Mobil uygulama · Kişisel gelişim</span><h3>Nestor</h3></div>
+        </div>
+        <p>Batı felsefesi ve edebiyatının klasik metinlerinden günde 15 dakikalık derslerle 90 günlük bir yolculuk: oku, anla, bugün bir şey yap. ABD pazarı için, dört dilde.</p>
+        <span class="go">Uygulamayı inceleyin →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="block" id="ilkeler">
+    <div class="block-head">
+      <span class="mono">İlkeler</span>
+      <h2>Ürün geliştirirken uyduğumuz üç kural</h2>
+    </div>
+    <ul class="principles">
+      <li>
+        <span class="sym" aria-hidden="true">→</span>
+        <h3>Sahayla birlikte geliştiriyoruz</h3>
+        <p>Ürünü masa başında değil, gerçek işletmelerle pilot yaparak şekillendiriyoruz.</p>
+      </li>
+      <li>
+        <span class="sym" aria-hidden="true">≠</span>
+        <h3>Veri satmıyoruz</h3>
+        <p>Sadece ürünün çalışması için gereken veriyi işliyor, hiçbirini üçüncü taraflara satmıyoruz.</p>
+      </li>
+      <li>
+        <span class="sym" aria-hidden="true">×5</span>
+        <h3>Çok dilli kuruyoruz</h3>
+        <p>Ürünlerimizi en baştan birden fazla dilde, yerli ve yabancı kullanıcıyı birlikte düşünerek tasarlıyoruz.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="block" id="ekip">
+    <div class="block-head">
+      <span class="mono">Ekip</span>
+      <h2>İki kişiyiz</h2>
+    </div>
+    <div class="team">
+      <div class="person">
+        <div class="initial" aria-hidden="true">01</div>
+        <div>
+          <h3>Ürün ve iş geliştirme</h3>
+          <span class="mono">Kurucu ortak</span>
+          <p>Ürün yönü, işletme ilişkileri, içerik ortaklıkları ve dağıtım.</p>
+        </div>
+      </div>
+      <div class="person">
+        <div class="initial" aria-hidden="true">02</div>
+        <div>
+          <h3>Yazılım geliştirme</h3>
+          <span class="mono">Kurucu ortak</span>
+          <p>Uygulama mimarisi, mobil geliştirme ve altyapı.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="iletisim">
+    <div class="block-head">
+      <span class="mono">İletişim</span>
+      <h2>Bize yazın</h2>
+    </div>
+    <div class="contact">
+      <span class="email" id="email">info@osplusstudio.com</span>
+      <button class="btn" id="copy" type="button">Adresi kopyala</button>
+    </div>
+    <p class="contact-note">Qrocket pilot programı, içerik iş birliği veya ürünlerimizle ilgili sorularınız için. Genelde birkaç iş günü içinde dönüş yapıyoruz.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 OSplusstudio · İstanbul</span>
+    <nav aria-label="Yasal">
+      <a href="gizlilik.html">Gizlilik Politikası</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </footer>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('copy'), el=document.getElementById('email');
+  function selectText(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);}
+  btn.addEventListener('click',function(){
+    var text=el.textContent.trim();
+    var done=function(){btn.textContent='Kopyalandı';setTimeout(function(){btn.textContent='Adresi kopyala'},1800)};
+    try{
+      navigator.clipboard.writeText(text).then(done,function(){selectText();btn.textContent='Seçildi, Ctrl+C ile kopyalayın'});
+    }catch(e){selectText();btn.textContent='Seçildi, Ctrl+C ile kopyalayın'}
+  });
+})();
+</script>
+</body>
+</html>

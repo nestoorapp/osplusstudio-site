@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gizlilik Politikası · OSplusstudio</title>
+<meta name="description" content="osplusstudio.com web sitesi için gizlilik politikası ve KVKK aydınlatma metni.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: okunabilir tek metin sütunu, solda sabit içindekiler (geniş ekranda) */
+:root{
+  --bg:#F2F3EE; --surface:#E7E9E1; --fg:#14171A; --muted:#5A6058;
+  --line:#D3D6CC; --accent:#2340E0; --todo-bg:#FFE58A; --todo-fg:#3A2E00;
+  --f-display:"Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101311; --surface:#1A1E1B; --fg:#ECEEE8; --muted:#9BA197;
+    --line:#2B302C; --accent:#8095FF; --todo-bg:#5A4A0C; --todo-fg:#FFE9A3; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101311; --surface:#1A1E1B; --fg:#ECEEE8; --muted:#9BA197;
+  --line:#2B302C; --accent:#8095FF; --todo-bg:#5A4A0C; --todo-fg:#FFE9A3; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.0625rem/1.65 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.plus{color:var(--accent)}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:24px;border-bottom:1px solid var(--line)}
+.mark{font:800 1.35rem/1 var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
+.mark small{font-weight:500;color:var(--muted);margin-left:2px}
+header.top a.back{color:var(--muted);text-decoration:none;font-weight:500;font-size:.95rem}
+
+.todo-banner{margin-top:24px;padding:14px 18px;border-radius:12px;background:var(--todo-bg);color:var(--todo-fg);font-size:.95rem}
+.todo{background:var(--todo-bg);color:var(--todo-fg);padding:1px 6px;border-radius:4px;font-weight:500}
+
+.title{padding-block:48px 32px}
+.title h1{font:800 clamp(2.2rem,6vw,3.6rem)/1.02 var(--f-display);letter-spacing:-.035em;margin:10px 0 12px}
+.title p{margin:0;color:var(--muted)}
+
+.layout{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:48px;padding-bottom:64px;border-top:1px solid var(--line);padding-top:40px}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start}
+.toc ol{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px;font-size:.92rem}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--fg)}
+article{max-width:68ch;min-width:0}
+article section{padding-bottom:12px}
+article h2{font:700 1.45rem/1.25 var(--f-display);letter-spacing:-.015em;margin:32px 0 10px;scroll-margin-top:24px;text-wrap:balance}
+article section:first-child h2{margin-top:0}
+article h2 .n{font-family:var(--f-mono);font-size:.85rem;color:var(--accent);margin-right:10px;font-weight:500}
+article h3{font:600 1.05rem/1.4 var(--f-body);margin:18px 0 6px}
+article p,article li{margin:0 0 10px}
+article ul{padding-left:1.2em;margin:0 0 12px}
+.callout{background:var(--surface);border-radius:14px;padding:18px 20px;margin:12px 0 16px}
+.callout ul{margin:0}
+.table-wrap{overflow-x:auto;margin:8px 0 16px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.en{border-top:1px solid var(--line);margin-top:32px;padding-top:8px}
+footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--muted);font-size:.92rem}
+footer a{color:inherit}
+@media (max-width:820px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:24px}
+  .toc{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="index.html">OS<span class="plus">+</span><small>studio</small></a>
+    <a class="back" href="index.html">Ana sayfa</a>
+  </header>
+
+  <!-- YAYINDAN ÖNCE: sarı alanları doldurun, sonra bu kutuyu ve tüm class="todo" işaretlerini kaldırın. -->
+  <div class="todo-banner"><strong>Taslak.</strong> Sarı ile işaretli alanlar sizin doldurmanız veya onaylamanız gereken yerler. Yayına almadan önce bu kutuyu silin.</div>
+
+  <div class="title">
+    <span class="mono">Yasal</span>
+    <h1>Gizlilik Politikası</h1>
+    <p>KVKK kapsamında aydınlatma metni dahil · Son güncelleme: 8 Ekim 2026</p>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="İçindekiler">
+      <span class="mono">İçindekiler</span>
+      <ol>
+        <li><a href="#kimiz">1. Biz kimiz</a></li>
+        <li><a href="#ozet">2. Kısaca</a></li>
+        <li><a href="#veriler">3. İşlediğimiz veriler</a></li>
+        <li><a href="#amac">4. Amaç ve hukuki sebep</a></li>
+        <li><a href="#aktarim">5. Aktarım</a></li>
+        <li><a href="#saklama">6. Saklama ve silme</a></li>
+        <li><a href="#haklar">7. Haklarınız</a></li>
+        <li><a href="#degisiklik">8. Değişiklikler</a></li>
+        <li><a href="#english">English summary</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section id="kimiz">
+        <h2><span class="n">01</span>Biz kimiz</h2>
+        <p>OSplusstudio, İstanbul'da faaliyet gösteren bir yazılım stüdyosudur. 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusu OSplusstudio'dur. <span class="todo">[KVKK, veri sorumlusunun kimliğinin yazılmasını istiyor. Şirket kurulduğunda unvanını buraya ekleyin.]</span></p>
+        <p>Bu politika <strong>osplusstudio.com</strong> web sitesi ve bize e-postayla ulaştığınızda yapılan yazışmalar için geçerlidir. Ürünlerimizin kendi gizlilik politikaları vardır: <a href="qrocket/gizlilik.html">Qrocket</a>, <a href="muslimplus/gizlilik.html">MuslimPlus</a>, <a href="nestor/privacy.html">Nestor</a>.</p>
+        <p>İletişim: <strong>info@osplusstudio.com</strong><br>Posta adresi: <span class="todo">[tebligat adresi]</span></p>
+      </section>
+
+      <section id="ozet">
+        <h2><span class="n">02</span>Kısaca</h2>
+        <div class="callout">
+          <ul>
+            <li>Bu site çerez kullanmaz, reklam veya ziyaretçi takip aracı içermez.</li>
+            <li>Kişisel verilerinizi satmıyor, kiralamıyor, pazarlama için paylaşmıyoruz.</li>
+            <li>Bize yazarsanız e-postanızı yalnızca size yanıt vermek için kullanırız.</li>
+            <li>Verilerinizin silinmesini her zaman isteyebilirsiniz.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="veriler">
+        <h2><span class="n">03</span>İşlediğimiz veriler</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Veri</th><th>Neden</th><th>Nerede tutulur</th></tr></thead>
+            <tbody>
+              <tr><td>Teknik kayıtlar (IP adresi, tarayıcı türü, ziyaret zamanı)</td><td>Sitenin güvenli ve çalışır durumda kalması için</td><td>Barındırma sağlayıcımız Netlify, kısa süreli sunucu kayıtları</td></tr>
+              <tr><td>E-posta yazışmaları (ad, e-posta adresi, mesaj içeriği)</td><td>Bize yazdığınızda yanıt vermek, pilot veya iş birliği taleplerini değerlendirmek için</td><td>E-posta sağlayıcımız Google Workspace</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="amac">
+        <h2><span class="n">04</span>Amaç ve hukuki sebep</h2>
+        <p>Verilerinizi KVKK madde 5'teki şu hukuki sebeplere dayanarak işliyoruz:</p>
+        <ul>
+          <li><strong>Meşru menfaat:</strong> sitenin güvenliğini sağlamak ve bize gelen mesajlara yanıt vermek.</li>
+          <li><strong>Sözleşmenin kurulması:</strong> pilot işletme veya iş birliği görüşmelerini yürütmek.</li>
+          <li><strong>Hukuki yükümlülük:</strong> yasal bir talep olduğunda.</li>
+        </ul>
+      </section>
+
+      <section id="aktarim">
+        <h2><span class="n">05</span>Aktarım</h2>
+        <p>Verilerinizi yalnızca sitenin ve e-postanın çalışması için kullandığımız hizmet sağlayıcılarla (Netlify, Google), gerektiği kadar paylaşırız. Bu sağlayıcıların sunucuları yurt dışında olabilir; bu durumda aktarım KVKK madde 9'a uygun şekilde yapılır.</p>
+        <p>Kişisel verilerinizi reklam şirketlerine, veri komisyoncularına veya başka bir üçüncü tarafa satmayız.</p>
+      </section>
+
+      <section id="saklama">
+        <h2><span class="n">06</span>Saklama ve silme</h2>
+        <p>Sunucu kayıtları barındırma sağlayıcısının standart süresi kadar tutulur ve sonra silinir. E-posta yazışmaları, görüşme amacı ortadan kalkınca veya siz talep ettiğinizde silinir.</p>
+        <p>Verilerinizin silinmesi için <strong>info@osplusstudio.com</strong> adresine yazabilirsiniz.</p>
+      </section>
+
+      <section id="haklar">
+        <h2><span class="n">07</span>Haklarınız</h2>
+        <p>KVKK madde 11 uyarınca şu haklara sahipsiniz:</p>
+        <ul>
+          <li>Kişisel verilerinizin işlenip işlenmediğini öğrenmek ve işlendiyse bilgi istemek</li>
+          <li>İşlenme amacını ve amaca uygun kullanılıp kullanılmadığını öğrenmek</li>
+          <li>Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilmek</li>
+          <li>Eksik veya yanlış işlenmişse düzeltilmesini istemek</li>
+          <li>Silinmesini veya yok edilmesini istemek</li>
+          <li>Düzeltme ve silme işlemlerinin aktarılan üçüncü kişilere bildirilmesini istemek</li>
+          <li>Otomatik sistemlerle analiz sonucu aleyhinize bir sonuç çıkmasına itiraz etmek</li>
+          <li>Kanuna aykırı işleme nedeniyle zarara uğradıysanız zararın giderilmesini talep etmek</li>
+        </ul>
+        <p>Taleplerinizi <strong>info@osplusstudio.com</strong> adresine iletebilirsiniz. Başvurunuzu en geç 30 gün içinde ücretsiz olarak yanıtlarız. Yanıtımızdan memnun kalmazsanız Kişisel Verileri Koruma Kurulu'na şikâyette bulunabilirsiniz.</p>
+      </section>
+
+      <section id="degisiklik">
+        <h2><span class="n">08</span>Değişiklikler</h2>
+        <p>Bu politikayı güncellediğimizde yeni sürümü bu sayfada yayınlar ve üstteki tarihi değiştiririz.</p>
+      </section>
+
+      <section id="english" class="en" lang="en">
+        <h2>English summary</h2>
+        <p>OSplusstudio is a software studio based in Istanbul, Türkiye. This policy covers the osplusstudio.com website and email correspondence with us. Our products publish their own privacy policies.</p>
+        <ul>
+          <li>This site uses no cookies, ads or visitor tracking.</li>
+          <li>Our host, Netlify, keeps short-lived technical logs such as IP addresses for security.</li>
+          <li>If you email us, we use your message only to reply. Email is handled by Google Workspace.</li>
+          <li>We do not sell or rent personal data.</li>
+          <li>To access or delete your data, email <strong>info@osplusstudio.com</strong>. We reply within 30 days.</li>
+        </ul>
+        <p>The Turkish version above is the binding text.</p>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <span>© 2026 OSplusstudio · İstanbul</span>
+    <a href="index.html">Ana sayfa</a>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MuslimPlus</title>
+<meta name="description" content="MuslimPlus: kısa günlük derslerle İslami bilgiyi adım adım öğrenmeye odaklanan eğitim uygulaması. Namaz takibi dahil. Türkçe, Deutsch, العربية, English.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23E8960F'/%3E%3Cpath d='M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z' fill='%235A1424'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;600&display=swap">
+<style>
+/* Layout: sıcak krem zemin, derin yeşil ana renk, altın vurgu. Hero'da telefonun içinde "bugünün dersi" kartı tek güçlü an. */
+:root{
+  --bg:#FDF7EC; --bg-2:#F8EBD3; --surface:#FFFFFF; --fg:#2A1A14; --muted:#6B5A50; --line:#EBDBC0;
+  --green:#5A1424; --green-2:#7A2034; --gold:#E8960F; --gold-ink:#2E1004; --on-green:#FCE6B8;
+  --f-display:"DM Serif Display",Georgia,serif; --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --f-ar:"Noto Naskh Arabic",serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1613; --bg-2:#14201B; --surface:#18251F; --fg:#EEF0E8; --muted:#A3AEA7; --line:#26352E;
+    --green:#1F6B50; --green-2:#2D8A68; --on-green:#FCE6B8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1613; --bg-2:#14201B; --surface:#18251F; --fg:#EEF0E8; --muted:#A3AEA7; --line:#26352E;
+  --green:#1F6B50; --green-2:#2D8A68; --on-green:#FCE6B8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.65 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow{color:var(--gold)}}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 21px/1 var(--f-body);letter-spacing:-.01em}
+.logo-mark{width:38px;height:38px;display:block;flex:none}
+.logo-mark svg{width:100%;height:100%;display:block}
+.word{display:inline-flex;align-items:baseline;font:800 22px/1 var(--f-body);letter-spacing:-.01em;color:var(--fg)}
+.word .alif{width:.34em;height:.9em;color:var(--green);margin:0 .02em;align-self:baseline;transform:translateY(.02em)}
+.word .pl{color:var(--green-2)}
+.nav-links{display:flex;gap:24px;font-size:15px;font-weight:600}
+.nav-links a{text-decoration:none;color:var(--muted)}
+.nav-links a:hover{color:var(--fg)}
+@media (max-width:600px){.nav-links{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,6vw,80px);align-items:center;padding-block:clamp(32px,6vw,72px) clamp(56px,8vw,104px)}
+.hero h1{font:400 clamp(42px,6.4vw,76px)/1.02 var(--f-display);letter-spacing:-.01em;margin:18px 0 22px}
+.hero h1 em{font-style:italic;color:var(--green-2)}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:50ch}
+.stores{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.store{display:inline-flex;align-items:center;gap:12px;padding:11px 18px 11px 14px;border-radius:14px;background:var(--fg);color:var(--bg);text-decoration:none;min-width:190px}
+.store svg{width:24px;height:24px;flex:none}
+.store small{display:block;font-size:11px;opacity:.75;font-weight:500;line-height:1.2}
+.store b{display:block;font-size:16px;line-height:1.2}
+.store[aria-disabled="true"]{cursor:default}
+.langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;list-style:none;padding:0}
+.langs li{font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.langs li[lang="ar"]{font-family:var(--f-ar);font-size:14px;padding-block:3px}
+
+/* phone */
+.phone-wrap{position:relative;display:grid;place-items:center}
+.phone-wrap::before{content:"";position:absolute;width:min(420px,90%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(232,150,15,.30),transparent 68%)}
+.pattern{position:absolute;width:min(460px,100%);aspect-ratio:1;opacity:.5}
+.phone{position:relative;width:min(300px,82vw);aspect-ratio:9/18.5;border-radius:42px;background:#0D1612;padding:12px;box-shadow:0 40px 80px -40px rgba(90,20,36,.45),0 0 0 1px rgba(255,255,255,.06) inset}
+.screen{height:100%;border-radius:32px;background:#FDF7EC;color:#2A1A14;overflow:hidden;display:flex;flex-direction:column;padding:22px 18px 16px;gap:14px;font-size:14px}
+.notch{width:90px;height:22px;border-radius:12px;background:#0D1612;margin:-12px auto 0}
+.scr-top{display:flex;justify-content:space-between;align-items:center}
+.scr-top b{font:800 16px/1 var(--f-body)}
+.seeds{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;background:#FFF;border:1px solid #E8E0CC;border-radius:999px;padding:4px 10px}
+.seeds i{width:10px;height:13px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7A2034;display:inline-block}
+.lesson{background:#5A1424;color:#FCE6B8;border-radius:22px;padding:18px;display:grid;gap:10px}
+.lesson .k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E8960F}
+.lesson h4{margin:0;font:400 24px/1.1 var(--f-display)}
+.lesson .row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;opacity:.85}
+.bar{height:7px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
+.bar i{display:block;height:100%;width:62%;background:#E8960F;border-radius:4px}
+.go{justify-self:start;background:#E8960F;color:#2E1004;font-weight:800;font-size:13px;border-radius:999px;padding:8px 16px}
+.mini-h{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A847E}
+.prayers{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.prayers span{display:grid;justify-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#5B6660}
+.prayers span i{width:30px;height:30px;border-radius:50%;border:2px solid #D9D0BA;display:grid;place-items:center}
+.prayers span.done i{background:#7A2034;border-color:#7A2034}
+.prayers span.done i::after{content:"";width:9px;height:5px;border:2.5px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.streak{display:flex;gap:10px;align-items:center;background:#FFF;border:1px solid #E8E0CC;border-radius:16px;padding:10px 12px;font-size:12.5px}
+.streak b{font:400 22px/1 var(--f-display);color:#5A1424}
+
+/* sections */
+section.s{padding-block:clamp(64px,9vw,112px)}
+section.alt{background:var(--bg-2)}
+.head{display:grid;gap:14px;max-width:720px;margin-bottom:clamp(36px,5vw,56px)}
+.head h2{font:400 clamp(32px,4.4vw,52px)/1.08 var(--f-display)}
+.head p{color:var(--muted)}
+
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;list-style:none;padding:0;margin:0;counter-reset:st}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px;display:grid;gap:10px;align-content:start;counter-increment:st;min-width:0}
+.steps li::before{content:counter(st);width:40px;height:40px;border-radius:12px;background:var(--green);color:var(--on-green);display:grid;place-items:center;font:400 22px/1 var(--f-display)}
+.steps h3{font:800 20px/1.25 var(--f-body)}
+.steps p{color:var(--muted);font-size:16px}
+
+.mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.mod{border-radius:24px;padding:clamp(24px,3vw,34px);display:grid;gap:12px;align-content:start;min-width:0;background:var(--surface);border:1px solid var(--line)}
+.mod.feature{background:var(--green);color:var(--on-green);border-color:transparent}
+.mod .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--bg-2)}
+.mod.feature .ico{background:rgba(255,255,255,.1)}
+.mod .ico svg{width:24px;height:24px}
+.mod h3{font:400 28px/1.15 var(--f-display)}
+.mod p{color:var(--muted);font-size:16px}
+.mod.feature p{color:rgba(252,230,184,.82)}
+.tag{justify-self:start;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px;background:var(--gold);color:var(--gold-ink)}
+
+.princ{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);list-style:none;padding:0;margin:0}
+.princ li{border-top:2px solid var(--green);padding-top:20px;display:grid;gap:8px;min-width:0}
+.princ h3{font:800 20px/1.3 var(--f-body)}
+.princ p{color:var(--muted);font-size:16px}
+
+.cta{background:var(--green);color:var(--on-green);border-radius:32px;padding:clamp(32px,6vw,72px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:32px;align-items:center;position:relative;overflow:hidden}
+.cta h2{font:400 clamp(32px,4.4vw,52px)/1.08 var(--f-display)}
+.cta p{color:rgba(252,230,184,.82);margin-top:14px;max-width:46ch}
+.cta .mail{justify-self:end;display:grid;gap:10px;text-align:right}
+.cta .mail a{font:800 clamp(18px,2.2vw,22px)/1.2 var(--f-body);color:var(--gold);text-decoration:none;word-break:break-all}
+.cta svg.deco{position:absolute;right:-60px;bottom:-60px;width:260px;opacity:.12}
+
+footer{padding-block:36px 48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;color:var(--muted);font-size:14px}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .steps,.princ{grid-template-columns:minmax(0,1fr)}
+  .mods{grid-template-columns:minmax(0,1fr)}
+  .cta{grid-template-columns:minmax(0,1fr)}
+  .cta .mail{justify-self:start;text-align:left}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="star8" viewBox="-50 -50 100 100"><path d="M0-46 13-31 33-33 31-13 46 0 31 13 33 33 13 31 0 46-13 31-33 33-31 13-46 0-31-13-33-33-13-31Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle r="16" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+  </defs>
+</svg>
+
+<header class="wrap nav">
+  <a class="logo" href="#" aria-label="MuslimPlus ana sayfa">
+    <span class="logo-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24" fill="#E8960F"/><path d="M41 20 57 14C56.4 41 55.6 65 52.6 83.5 51.8 88 46.4 89 44.6 85.6 45.6 64 44.6 42 41 20Z" fill="#5A1424"/><g fill="#5A1424" fill-opacity=".55"><path d="M72 19l5 5-5 5-5-5z"/><path d="M72 31l5 5-5 5-5-5z"/><path d="M72 43l5 5-5 5-5-5z"/><path d="M72 55l5 5-5 5-5-5z"/><path d="M72 67l5 5-5 5-5-5z"/></g></svg></span><span class="word" aria-label="MuslimPlus">Mus<svg class="alif" viewBox="0 0 20 70" aria-hidden="true"><path d="M2.5 5 17.5 0C16.9 24 16.1 46 13.4 63.8 12.8 68.2 7.8 69.2 6.3 66 7 46 6 26 2.5 5Z" fill="currentColor"/></svg>im<span class="pl">Plus</span></span>
+  </a>
+  <nav class="nav-links" aria-label="Sayfa içi">
+    <a href="#nasil">Nasıl çalışır</a>
+    <a href="#icerik">İçerik</a>
+    <a href="#iletisim">İletişim</a>
+    <a href="../index.html">OS+studio</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <span class="eyebrow">MuslimPlus</span>
+      <h1>Her gün birkaç dakika. Dinini <em>adım adım</em> öğren.</h1>
+      <p class="lead">MuslimPlus, kısa günlük derslerle İslami bilgiyi öğrenmeye odaklanan bir eğitim uygulaması. Namaz takibi de içinde, ama asıl amaç her gün biraz öğrenmek.</p>
+      <div class="stores">
+        <a class="store" href="#" aria-disabled="true" title="Yakında">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.8 13.6 12 4 21.2c-.4-.2-.6-.6-.6-1.1V3.9c0-.5.2-.9.6-1.1Z" fill="#34A853"/><path d="m16.8 8.8-3.2 3.2L4 2.8c.2-.1.5-.1.8 0l12 6Z" fill="#4285F4"/><path d="m16.8 15.2-12 6c-.3.1-.6.1-.8 0l9.6-9.2 3.2 3.2Z" fill="#EA4335"/><path d="M20.4 12c0 .5-.3.9-.7 1.1l-2.9 2.1-3.2-3.2 3.2-3.2 2.9 2.1c.4.2.7.6.7 1.1Z" fill="#FBBC04"/></svg>
+          <span><small>Yakında</small><b>Google Play</b></span>
+        </a>
+        <a class="store" href="#" aria-disabled="true" title="Yakında">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.6-1-2.6-3.9ZM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4Z"/></svg>
+          <span><small>Yakında</small><b>App Store</b></span>
+        </a>
+      </div>
+      <ul class="langs" aria-label="Uygulamanın dilleri">
+        <li lang="tr">Türkçe</li><li lang="de">Deutsch</li><li lang="ar" dir="rtl">العربية</li><li lang="en">English</li>
+      </ul>
+    </div>
+
+    <div class="phone-wrap" aria-hidden="true">
+      <div class="phone">
+        <div class="screen">
+          <div class="notch"></div>
+          <div class="scr-top"><b>Selamün aleyküm</b><span class="seeds"><i></i>128</span></div>
+          <div class="lesson">
+            <span class="k">Bugünün dersi · Fıkıh</span>
+            <h4>Abdestin farzları</h4>
+            <div class="row"><span>3 / 5 bölüm</span><span>4 dk</span></div>
+            <div class="bar"><i></i></div>
+            <span class="go">Devam et</span>
+          </div>
+          <span class="mini-h">Bugünün namazları</span>
+          <div class="prayers">
+            <span class="done"><i></i>Sabah</span><span class="done"><i></i>Öğle</span><span class="done"><i></i>İkindi</span><span><i></i>Akşam</span><span><i></i>Yatsı</span>
+          </div>
+          <div class="streak"><b>12</b><span>gündür her gün öğreniyorsun</span></div>
+          <span class="mini-h">Dinle</span>
+          <div class="streak"><span style="width:30px;height:30px;border-radius:50%;background:#5A1424;display:grid;place-items:center;flex:none"><svg viewBox="0 0 12 12" width="11" height="11"><path d="M3 2l7 4-7 4z" fill="#E8960F"/></svg></span><span>Sesli hikâye · 6 dk</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="s alt" id="nasil">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Nasıl çalışır</span>
+        <h2>Uzun okumalar değil, her gün küçük bir adım.</h2>
+        <p>Bilgi parça parça, alışkanlık günden güne. Uygulama seni her gün kısa bir derse ve namazlarını takip etmeye davet eder.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Günlük dersini al</h3><p>Birkaç dakikalık kısa bir ders, ardından anladığını pekiştiren birkaç soru.</p></li>
+        <li><h3>Namazını takip et</h3><p>Günün namazlarını işaretle, namaz vakitlerini bulunduğun yere göre gör.</p></li>
+        <li><h3>Tohum topla, yeni konular aç</h3><p>Öğrendikçe ve düzenli oldukça tohum biriktirirsin. Tohumlar yeni eğitim modüllerinin kapısını açar.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="s" id="icerik">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">İçerik</span>
+        <h2>Hayatın her döneminde lazım olan bilgi.</h2>
+        <p>İçerikler en baştan dört dilde hazırlanıyor. Hikâyeleri sesli dinleyebilirsin.</p>
+      </div>
+      <div class="mods">
+        <article class="mod feature">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#E8960F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M8 7h6M8 11h4"/></svg></span>
+          <span class="tag">Ana modül</span>
+          <h3>Fıkıh</h3>
+          <p>Abdestten namaza, oruçtan zekâta; günlük hayatta karşına çıkan konular, hayatın dönemlerine göre sıralanmış kısa derslerle.</p>
+        </article>
+        <article class="mod">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14C17 4 14 4.5 12 6Zm0 0v14"/></svg></span>
+          <h3>Kur'an</h3>
+          <p>Ayetleri anlamlarıyla birlikte, kendi dilinde oku.</p>
+        </article>
+        <article class="mod">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6M3 18a2 2 0 0 0 2 2h1v-6H5a2 2 0 0 0-2 2Zm18 0a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2Z"/></svg></span>
+          <h3>Sesli hikâyeler</h3>
+          <p>Öğretici İslami hikâyeler, dört dilde seslendirilmiş olarak.</p>
+        </article>
+        <article class="mod">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <h3>Namaz takibi</h3>
+          <p>Konumuna göre namaz vakitleri ve günlük namaz işaretleme. Ücretsiz.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="s alt">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">İlkelerimiz</span>
+        <h2>Güvenle kullanabileceğin bir uygulama.</h2>
+      </div>
+      <ul class="princ">
+        <li><h3>Önce öğrenme</h3><p>Ekranın merkezinde dersler var. Her özellik, her gün biraz daha öğrenmene hizmet ediyor.</p></li>
+        <li><h3>Verilerin satılmaz</h3><p>Sadece uygulamanın çalışması için gereken veriyi işliyoruz, hiçbirini satmıyoruz.</p></li>
+        <li><h3>Dört dil, tek uygulama</h3><p>Türkçe, Almanca, Arapça ve İngilizce. Ailede herkes kendi dilinde öğrenebilir.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="s" id="iletisim">
+    <div class="wrap">
+      <div class="cta">
+        <svg class="deco" viewBox="0 0 300 300" aria-hidden="true" style="color:#E8960F"><use href="#star8" width="300" height="300"/></svg>
+        <div>
+          <h2>Çok yakında mağazalarda.</h2>
+          <p>Soru, öneri veya içerik iş birliği için bize yazabilirsin. Dernek ve vakıflarla birlikte çalışmaya açığız.</p>
+        </div>
+        <div class="mail">
+          <span>Bize yazın</span>
+          <a href="mailto:info@osplusstudio.com">info@osplusstudio.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 MuslimPlus · Bir <a href="../index.html">OSplusstudio</a> ürünü</span>
+  <nav aria-label="Yasal">
+    <a href="gizlilik.html">Gizlilik Politikası</a>
+    <a href="#iletisim">İletişim</a>
+  </nav>
+</footer>
+<script>
+document.querySelectorAll('.store[aria-disabled="true"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();});});
+</script>
+</body>
+</html>

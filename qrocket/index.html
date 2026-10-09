@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qrocket</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='1' width='30' height='30' rx='9' fill='%23FBF8F3' stroke='%23EE7A3A' stroke-width='2'/%3E%3Crect x='7' y='7' width='7' height='7' rx='1.5' fill='%231E2433'/%3E%3Crect x='7' y='18' width='7' height='7' rx='1.5' fill='%231E2433'/%3E%3Cpath d='M22 6c3 2.5 4 6 3 10l-3 3-3-3c-1-4 0-7.5 3-10z' fill='%23EE7A3A'/%3E%3C/svg%3E">
+
+<meta name="description" content="Qrocket: restoran ve kafeler için yasaya uygun QR menü, çok dilli AI garson ve masada ödeme. Pek yakında.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a bright, welcoming page. Hero = promise + live AI waiter console with a brass service bell;
+   venue tabs show dark "window" scenes of each room, then one-price flow, module cards, phase track, seed sign-up.
+   Palette: warm porcelain ground, navy ink, appetizing orange accent, herb green for confirmations. */
+:root{
+  --bg:#FBF8F3; --bg-2:#F3EEE6; --surface:#FFFFFF; --glass:#FFFFFF; --glass-2:rgba(30,36,51,.045);
+  --line:rgba(30,36,51,.11); --line-2:rgba(30,36,51,.2);
+  --fg:#1E2433; --fg-soft:#535B6B; --fg-dim:#868C98;
+  --brass:#EE7A3A; --tomato:#D2553F; --sage:#3E8A5E; --cream:#2F7FA8; --ink:#1E2433;
+  --saffron:var(--brass); --coral:var(--tomato); --orchid:var(--sage); --cyan:var(--cream); --ok:var(--sage);
+  --holo:linear-gradient(var(--brass),var(--brass));
+  --stage:#1F2331;
+  --f-display:"Young Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.aura{position:absolute;inset:-200px 0 auto 0;height:900px;pointer-events:none;z-index:0;
+  background:radial-gradient(560px 360px at 80% 28%,rgba(238,122,58,.12),transparent 70%),radial-gradient(420px 300px at 62% 64%,rgba(62,138,94,.08),transparent 70%)}
+header,main,footer{position:relative;z-index:1}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.label{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-soft)}
+.label::before{content:"";display:inline-block;width:18px;height:1px;background:var(--brass);vertical-align:middle;margin-right:10px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(28px,3.8vw,46px)}
+h3{font-family:var(--f-body);font-size:19px;font-weight:700;letter-spacing:-.005em;line-height:1.25}
+p{margin:0}
+.holo{color:var(--brass)}
+@keyframes shift{from{background-position:0% 50%}to{background-position:100% 50%}}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:400;font-size:23px}
+.brand svg{width:30px;height:30px}
+.nav-links{display:flex;gap:24px;align-items:center;font-size:15px}
+.nav-links a{text-decoration:none;color:var(--fg-soft)}
+.nav-links a:hover{color:var(--fg)}
+@media (max-width:760px){.nav-links a:not(.btn){display:none}}
+
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:15px;text-decoration:none;border-radius:999px;padding:12px 22px;border:1px solid transparent;cursor:pointer;font-family:var(--f-body);transition:transform .15s ease,box-shadow .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--brass);color:#16120B;box-shadow:0 8px 26px -12px rgba(238,122,58,.6)}
+.btn-primary:hover{background:#F28F55}
+.nav-links .btn-primary{color:#16120B}
+.btn-ghost{border-color:var(--line-2);color:var(--fg);background:var(--glass)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;padding-block:clamp(28px,6vw,72px) clamp(56px,8vw,104px)}
+.hero > *{min-width:0}
+.soon{display:inline-flex;align-items:center;gap:10px;background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 10px;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-soft)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:ping 2s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(156,199,155,.6)}100%{box-shadow:0 0 0 12px rgba(156,199,155,0)}}
+.hero h1{font-size:clamp(32px,4.3vw,56px);margin-block:24px}
+.hero h1 .holo{white-space:nowrap}
+.hero h1 span{display:block}
+.lead{font-size:clamp(17px,1.5vw,19px);color:var(--fg-soft);max-width:54ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.ticket{margin-top:36px;display:grid;grid-template-columns:auto 1fr;gap:6px 20px;font-family:var(--f-mono);font-size:12.5px;max-width:420px;padding-top:18px;border-top:1px dashed var(--line-2)}
+.ticket dt{color:var(--fg-dim)}
+.ticket dd{margin:0;text-align:right}
+.ticket .bar{display:inline-block;width:90px;height:6px;border-radius:3px;background:var(--glass-2);vertical-align:middle;margin-right:8px;overflow:hidden}
+.ticket .bar i{display:block;height:100%;width:34%;background:var(--brass);animation:load 3.2s ease-in-out infinite alternate}
+@keyframes load{from{width:28%}to{width:40%}}
+
+/* AI console */
+.console{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 30px 60px -30px rgba(30,36,51,.28);margin-top:70px}
+.orb-wrap{position:absolute;right:-12px;top:-92px;width:180px;height:180px}
+.bell{width:100%;height:100%;display:block;overflow:visible}
+.bell .plunger{transition:transform .2s ease}
+.bell .waves path{opacity:0}
+.speaking .bell .plunger{animation:press .55s ease-in-out infinite}
+.speaking .bell .w1{animation:ring 1.1s ease-out infinite}
+.speaking .bell .w2{animation:ring 1.1s ease-out .25s infinite}
+.bell .shine{animation:shine 5s ease-in-out infinite}
+@keyframes press{0%,100%{transform:translateY(0)}35%{transform:translateY(9px)}}
+@keyframes ring{0%{opacity:0}25%{opacity:.9}100%{opacity:0}}
+@keyframes shine{0%,100%{opacity:.35}50%{opacity:.6}}
+.c-head{display:flex;flex-direction:column;gap:6px;padding-right:170px;min-height:64px}
+.c-head b{font-family:var(--f-display);font-size:22px;font-weight:400}
+.c-state{font-family:var(--f-mono);font-size:11.5px;color:var(--fg-soft);display:flex;align-items:center;gap:8px}
+.c-state i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.speaking .c-state i{background:var(--saffron);animation:ping 1s ease-out infinite}
+.langs{display:flex;gap:5px;margin-top:16px;flex-wrap:wrap}
+.langs span{font-family:var(--f-mono);font-size:10.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--fg-dim);transition:all .25s ease}
+.langs span.on{color:#16120B;background:var(--holo);border-color:transparent}
+.transcript{margin-top:16px;min-height:236px;display:flex;flex-direction:column;gap:10px;font-size:14.5px;line-height:1.5}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px}
+.msg.guest{align-self:flex-end;background:var(--fg);color:#FFFFFF;border-bottom-right-radius:5px}
+.msg.ai{align-self:flex-start;background:var(--glass-2);border:1px solid var(--line);border-bottom-left-radius:5px;position:relative}
+.msg.ai::before{content:"";position:absolute;left:-1px;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--holo)}
+.msg .warn{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line-2);font-size:12.5px;color:var(--fg-soft)}
+.meta{align-self:flex-start;display:flex;flex-wrap:wrap;gap:6px;font-family:var(--f-mono);font-size:10.5px;color:var(--fg-dim)}
+.meta span{border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.meta span.src{color:var(--ok);border-color:rgba(156,199,155,.3)}
+.caret{display:inline-block;width:7px;height:1em;vertical-align:-2px;margin-left:2px;background:var(--saffron);animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.thinking{display:inline-flex;gap:4px}
+.thinking i{width:6px;height:6px;border-radius:50%;background:var(--fg-soft);animation:bob 1s ease-in-out infinite}
+.thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{font:inherit;font-size:13px;color:var(--fg);background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;transition:border-color .2s,background .2s}
+.chip:hover{border-color:var(--line-2);background:var(--glass-2)}
+.chip[aria-pressed="true"]{border-color:var(--orchid);background:rgba(238,122,58,.12)}
+.prompt{margin-top:14px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px 12px 12px 16px;background:var(--bg);font-size:14px;color:var(--fg-dim)}
+.prompt span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prompt b{width:34px;height:34px;border-radius:11px;background:var(--holo);display:grid;place-items:center;flex:none}
+.prompt b svg{width:16px;height:16px}
+.demo-note{margin-top:10px;font-size:12px;color:var(--fg-dim)}
+@media (max-width:960px){.hero{grid-template-columns:1fr}}
+@media (max-width:520px){.orb-wrap{width:118px;height:118px;top:-58px;right:-2px}.c-head{padding-right:110px}.console{padding:18px;margin-top:56px}}
+
+/* language marquee */
+.marquee{border-block:1px solid var(--line);overflow:hidden;padding-block:16px;background:rgba(255,255,255,.015)}
+.marquee-track{display:flex;gap:42px;width:max-content;animation:slide 38s linear infinite;font-family:var(--f-display);font-size:clamp(22px,2.8vw,32px);color:var(--fg-dim)}
+.marquee-track span:nth-child(5n+1){color:var(--fg)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* sections */
+section{padding-block:clamp(64px,9vw,112px)}
+.sec-head{display:grid;gap:16px;max-width:760px;margin-bottom:clamp(36px,4.5vw,56px)}
+.sec-head p{color:var(--fg-soft)}
+.glow{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.glow::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(238,122,58,.14),transparent 60%)}
+.glow:hover::before{opacity:1}
+.glow > *{position:relative}
+
+/* why now */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.why article{padding:28px;display:grid;gap:12px;align-content:start}
+.why .k{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.why article:nth-child(1) .k{color:var(--saffron)}.why article:nth-child(2) .k{color:var(--orchid)}.why article:nth-child(3) .k{color:var(--cyan)}
+.why article p{color:var(--fg-soft);font-size:16px}
+@media (max-width:860px){.why{grid-template-columns:1fr}}
+
+/* single source flow */
+.flow{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:88px;align-items:center}
+.src{padding:30px;display:grid;gap:16px;border-color:rgba(238,122,58,.35);box-shadow:0 0 60px -20px rgba(238,122,58,.35)}
+.src .item{font-family:var(--f-display);font-size:26px}
+.src .price{font-family:var(--f-mono);font-size:clamp(26px,3vw,36px);font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.src .price s{color:var(--fg-dim);font-size:.6em}
+.src .price b{font-weight:500;color:var(--saffron)}
+.src p{font-size:15px;color:var(--fg-soft)}
+.outs{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.outs li{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:15px 18px}
+.outs li > span:first-child{font-weight:600}
+.outs .tick{font-family:var(--f-mono);font-size:11.5px;color:var(--ok);white-space:nowrap}
+.outs li::before{content:"";position:absolute;right:100%;top:50%;width:72px;height:1px;background:linear-gradient(90deg,rgba(238,122,58,.0),rgba(238,122,58,.45))}
+.outs li::after{content:"";position:absolute;right:100%;top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:var(--saffron);box-shadow:0 0 12px 3px rgba(238,122,58,.7);animation:travel 2.6s linear infinite}
+.outs li:nth-child(2)::after{animation-delay:.3s}.outs li:nth-child(3)::after{animation-delay:.6s}.outs li:nth-child(4)::after{animation-delay:.9s}.outs li:nth-child(5)::after{animation-delay:1.2s}
+@keyframes travel{0%{transform:translateX(-68px);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(0);opacity:0}}
+@media (max-width:860px){.flow{grid-template-columns:1fr;gap:20px}.outs li::before,.outs li::after{display:none}}
+
+/* modules */
+.mods{display:grid;gap:14px}
+.mod{display:grid;grid-template-columns:110px minmax(0,1fr) 270px;gap:clamp(18px,3vw,40px);align-items:center;padding:clamp(22px,3vw,32px)}
+.mod .num{font-family:var(--f-mono);font-size:11.5px;color:var(--fg-dim);letter-spacing:.12em;text-transform:uppercase;align-self:start}
+.mod .num b{display:block;font-family:var(--f-display);font-size:42px;font-weight:400;color:var(--brass);line-height:1.1}
+.mod .txt{display:grid;gap:12px}
+.mod .txt > p{color:var(--fg-soft);font-size:16px}
+.mod ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.mod ul li{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--fg-soft)}
+.mini{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 15px;font-family:var(--f-mono);font-size:11.5px;line-height:1.6}
+.mini .row{display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+.mini .hr{border-top:1px dashed var(--line-2);margin:7px 0}
+.mini .muted{color:var(--fg-dim)}
+.mini .ai{color:var(--orchid)}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:8px 0;background:var(--glass-2)}
+.split i{display:block;height:100%}
+.stars{display:flex;gap:4px;margin:4px 0 8px}
+.stars svg{width:18px;height:18px}
+.gbtn{display:block;text-align:center;border:1px solid var(--line-2);border-radius:8px;padding:5px;font-family:var(--f-body);font-weight:600;font-size:12px}
+.spark{width:100%;height:46px;display:block;margin-top:6px}
+@media (max-width:960px){.mod{grid-template-columns:1fr}.mod .num b{display:inline;margin-left:8px;font-size:24px}}
+
+/* roadmap */
+.track{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.phase{padding:26px;display:grid;gap:14px;align-content:start}
+.phase.now{border:1.5px solid var(--brass);background:var(--surface)}
+.phase header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg-soft)}
+.phase.now .pill{background:var(--holo);color:#16120B;border-color:transparent}
+.phase ul{margin:0;padding-left:18px;color:var(--fg-soft);font-size:15px;display:grid;gap:5px}
+.phase ul li::marker{color:var(--fg-dim)}
+@media (max-width:860px){.track{grid-template-columns:1fr}}
+
+/* seed / signup */
+.seed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:start}
+.stamp{display:inline-block;font-family:var(--f-display);font-weight:400;font-size:clamp(44px,6.8vw,86px);line-height:.95;margin-bottom:28px;-webkit-text-stroke:1.2px var(--fg);color:transparent}
+.stamp span{display:block}
+.stamp span + span{-webkit-text-stroke:0}
+.seed p{color:var(--fg-soft);max-width:52ch}
+.seed p + p{margin-top:12px}
+.facts{margin-top:26px;display:grid;gap:9px;font-family:var(--f-mono);font-size:13px}
+.facts div{display:flex;gap:12px}
+.facts span:first-child{color:var(--saffron)}
+form{padding:clamp(22px,3vw,34px);display:grid;gap:16px}
+form h3{font-family:var(--f-display);font-weight:400;font-size:26px}
+.field{display:grid;gap:7px}
+.field label{font-size:14px;font-weight:600}
+.field input,.field select{font:inherit;font-size:16px;color:var(--fg);background:#FFFFFF;border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;width:100%}
+.field select option{background:var(--bg-2);color:var(--fg)}
+.field input:focus,.field select:focus{border-color:var(--orchid);outline:none;box-shadow:0 0 0 3px rgba(238,122,58,.2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two > *{min-width:0}
+.note{font-size:12.5px;color:var(--fg-dim)}
+#form-status{font-size:14px;font-weight:600;color:var(--ok);min-height:1.2em}
+@media (max-width:860px){.seed{grid-template-columns:1fr}}
+@media (max-width:480px){.two{grid-template-columns:1fr}}
+
+/* venues */
+.vtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:640px;padding:6px;border:1px solid var(--line);border-radius:20px;background:var(--glass);margin-bottom:28px}
+.vtab{font:inherit;font-weight:600;font-size:15px;color:var(--fg-soft);background:transparent;border:0;border-radius:14px;padding:11px 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:color .2s,background .2s}
+.vtab svg{width:20px;height:20px;flex:none}
+.vtab:hover{color:var(--fg)}
+.vtab[aria-selected="true"]{background:var(--brass);color:#16120B}
+@media (max-width:520px){.vtab{flex-direction:column;gap:4px;font-size:13px;padding:9px 4px}}
+.vpanel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4.5vw,64px);align-items:center}
+.vpanel[hidden]{display:none!important}
+.stage{position:relative;width:100%;max-width:560px;aspect-ratio:1/1;border-radius:30px;border:1px solid var(--line);overflow:hidden;
+  background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--v1) 30%,transparent),transparent 62%),radial-gradient(circle at 82% 88%,color-mix(in srgb,var(--v2) 24%,transparent),transparent 55%),var(--stage);
+  box-shadow:0 40px 70px -40px rgba(30,36,51,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.stage svg{display:block;width:100%;height:100%}
+.stage .tag{position:absolute;left:16px;top:16px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#ECE6DA;background:rgba(10,12,20,.55);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:5px 11px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.vcopy{display:grid;gap:18px;align-content:start}
+.vcopy h3{font-family:var(--f-display);font-size:clamp(28px,3.2vw,40px);font-weight:400;line-height:1.1;letter-spacing:-.01em}
+.vcopy h3 em{font-style:normal;color:var(--v1)}
+.vcopy > p{color:var(--fg-soft)}
+.vchat{display:flex;flex-direction:column;gap:9px;padding:16px;border:1px solid var(--line);border-radius:20px;background:var(--bg);font-size:14.5px;line-height:1.5}
+.vlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;font-size:15px}
+.vlist li{display:flex;gap:10px;align-items:flex-start}
+.vlist li::before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border-radius:5px;background:var(--v1);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+@media (max-width:900px){.vpanel{grid-template-columns:1fr}.stage{margin-inline:auto}}
+@media (max-width:480px){.vlist{grid-template-columns:1fr}}
+
+.play{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14px;font-weight:600;color:#16120B;background:var(--brass);border:0;border-radius:999px;padding:10px 18px;cursor:pointer}
+.play svg{width:14px;height:14px}
+footer{padding-block:36px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;color:var(--fg-dim)}
+footer .mono{font-family:var(--f-mono)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>body{margin:0}footer a{color:inherit}</style>
+</head>
+<body>
+<div class="aura" aria-hidden="true"></div>
+
+<header class="wrap nav">
+  <a class="brand" href="#top" aria-label="Qrocket ana sayfa">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6A066"/><stop offset=".5" stop-color="#EE7A3A"/><stop offset="1" stop-color="#C95A22"/></linearGradient></defs><rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="none" stroke="url(#lg)" stroke-width="1.6"/><rect x="7" y="7" width="7" height="7" rx="1.5" fill="#1E2433"/><rect x="9.3" y="9.3" width="2.4" height="2.4" fill="#FFFFFF"/><rect x="7" y="18" width="7" height="7" rx="1.5" fill="#1E2433"/><rect x="9.3" y="20.3" width="2.4" height="2.4" fill="#FFFFFF"/><path d="M22 6c3 2.5 4 6 3 10l-3 3-3-3c-1-4 0-7.5 3-10z" fill="url(#lg)"/><path d="M20.5 21l1.5 5 1.5-5z" fill="#D9A441"/></svg>
+    Qrocket
+  </a>
+  <nav class="nav-links" aria-label="Sayfa içi">
+    <a href="#mekanlar">Mekânlar</a>
+    <a href="#neden">Neden şimdi</a>
+    <a href="#urun">Ürün</a>
+    <a href="#yol">Yol haritası</a>
+    <a href="../index.html">OS+studio</a>
+    <a class="btn btn-primary" href="#katil">Haber ver</a>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <span class="soon"><i class="dot" aria-hidden="true"></i>Pek yakında · Seed aşaması</span>
+      <h1>
+        <span>Menünüz yasaya uygun.</span>
+        <span>Garsonunuz <span class="holo" style="display:inline">5 dil</span> konuşuyor.</span>
+        <span>Hesap masada kapanıyor.</span>
+      </h1>
+      <p class="lead">Qrocket; restoran, kafe, bar ve pub'lar için yapay zekâlı bir QR platformu. Fiyat listenizi kurala uygun tutar, misafirle kendi dilinde konuşur, siparişi alır ve masayı hızlı döndürür. Ürünü şu an yazıyoruz, ilk pilot işletmelerle birlikte.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#katil">Pilot işletme olun</a>
+        <a class="btn btn-ghost" href="#urun">Neler yapacak?</a>
+      </div>
+      <dl class="ticket">
+        <dt>DURUM</dt><dd><span class="bar" aria-hidden="true"><i></i></span>Faz 1 geliştiriliyor</dd>
+        <dt>AŞAMA</dt><dd>Seed</dd>
+        <dt>LANSMAN</dt><dd>Pek yakında</dd>
+      </dl>
+    </div>
+
+    <div class="console" id="console" aria-label="AI garson canlı demo">
+      <div class="orb-wrap" aria-hidden="true">
+        <svg class="bell" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="bell-brass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A6420"/><stop offset=".38" stop-color="#F2CF7E"/><stop offset=".62" stop-color="#D9A441"/><stop offset="1" stop-color="#7A5518"/></linearGradient>
+            <linearGradient id="bell-base" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A3524"/><stop offset="1" stop-color="#22170E"/></linearGradient>
+            <radialGradient id="bell-glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#D9A441" stop-opacity=".35"/><stop offset="1" stop-color="#D9A441" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle cx="100" cy="110" r="96" fill="url(#bell-glow)"/>
+          <g class="waves" fill="none" stroke="#D9A441" stroke-width="3.5" stroke-linecap="round">
+            <path class="w1" d="M36 66 Q24 92 36 118"/><path class="w1" d="M164 66 Q176 92 164 118"/>
+            <path class="w2" d="M20 52 Q2 92 20 132"/><path class="w2" d="M180 52 Q198 92 180 132"/>
+          </g>
+          <ellipse cx="100" cy="172" rx="80" ry="10" fill="#000" fill-opacity=".35"/>
+          <g class="plunger"><rect x="94" y="44" width="12" height="30" rx="3" fill="#A8792B"/><ellipse cx="100" cy="44" rx="15" ry="6" fill="url(#bell-brass)"/></g>
+          <rect x="24" y="148" width="152" height="18" rx="9" fill="url(#bell-base)"/>
+          <path d="M38 152 C38 102 64 72 100 72 C136 72 162 102 162 152 Z" fill="url(#bell-brass)"/>
+          <path class="shine" d="M58 138 C60 110 76 92 96 86" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <rect x="34" y="146" width="132" height="7" rx="3.5" fill="#B9883A"/>
+        </svg>
+      </div>
+      <div class="c-head">
+        <b>Qrocket AI garson</b>
+        <span class="c-state"><i></i><span id="state">Masa 12 · dinliyor</span></span>
+      </div>
+      <div class="langs" id="langs" aria-label="Diller"><span data-l="TR">TR</span><span data-l="EN" class="on">EN</span><span data-l="AR">AR</span><span data-l="RU">RU</span><span data-l="DE">DE</span></div>
+      <div class="transcript" id="transcript" aria-live="polite">
+        <div class="msg guest" dir="auto">Is the İskender spicy?</div>
+        <div class="msg ai" dir="auto">No, it isn't spicy. It's served with tomato sauce, butter and yoghurt. Many guests pair it with ayran.</div>
+        <div class="meta"><span>dil: English</span><span class="src">kaynak: işletmenin menüsü</span></div>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Örnek sorular">
+        <button class="chip" type="button" data-i="0" aria-pressed="true">Is it spicy?</button>
+        <button class="chip" type="button" data-i="1" aria-pressed="false">Glutensiz ne var?</button>
+        <button class="chip" type="button" data-i="2" aria-pressed="false">Nussallergie</button>
+        <button class="chip" type="button" data-i="3" aria-pressed="false" dir="rtl">طبق نباتي؟</button>
+        <button class="chip" type="button" data-i="4" aria-pressed="false">Что посоветуете?</button>
+        <button class="chip" type="button" data-i="5" aria-pressed="false">Hesabı bölelim</button>
+      </div>
+      <div class="prompt" aria-hidden="true"><span>Menü hakkında bir şey sorun…</span><b><svg viewBox="0 0 16 16"><path d="M3 8h9M8 3.5 12.5 8 8 12.5" fill="none" stroke="#16120B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></b></div>
+      <p class="demo-note">Örnek sohbet. Bir soruya dokunun, AI garson cevaplasın.</p>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Merhaba</span><span>Hello</span><span>مرحبا</span><span>Привет</span><span>Hallo</span><span>Merhaba</span><span>Hello</span><span>مرحبا</span><span>Привет</span><span>Hallo</span>
+      <span>Merhaba</span><span>Hello</span><span>مرحبا</span><span>Привет</span><span>Hallo</span><span>Merhaba</span><span>Hello</span><span>مرحبا</span><span>Привет</span><span>Hallo</span>
+    </div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="g-counter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2A1E"/><stop offset="1" stop-color="#140E09"/></linearGradient>
+      <linearGradient id="g-glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".24"/><stop offset=".22" stop-color="#fff" stop-opacity=".05"/><stop offset=".8" stop-color="#fff" stop-opacity=".03"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="g-cocktail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8603F"/><stop offset="1" stop-color="#9C1F2A"/></linearGradient>
+      <linearGradient id="g-bottle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#174C3D"/><stop offset=".5" stop-color="#2E8466"/><stop offset="1" stop-color="#103A2F"/></linearGradient>
+      <linearGradient id="g-beer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC24A"/><stop offset="1" stop-color="#C2640E"/></linearGradient>
+      <linearGradient id="g-chrome" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5E5C72"/><stop offset=".45" stop-color="#F1EBDD"/><stop offset="1" stop-color="#7F8A80"/></linearGradient>
+      <linearGradient id="g-coffee" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A522C"/><stop offset=".35" stop-color="#5A3119"/><stop offset="1" stop-color="#2A150A"/></linearGradient>
+      <linearGradient id="g-copper" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A4A22"/><stop offset=".5" stop-color="#E9A468"/><stop offset="1" stop-color="#94512A"/></linearGradient>
+      <linearGradient id="g-cloche" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#55536A"/><stop offset=".36" stop-color="#F3F2FA"/><stop offset=".62" stop-color="#BDBBCD"/><stop offset="1" stop-color="#47455A"/></linearGradient>
+      <radialGradient id="g-warm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#D9A441" stop-opacity=".55"/><stop offset="1" stop-color="#D9A441" stop-opacity="0"/></radialGradient>
+      <pattern id="p-brick" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 .5H40M0 10.5H40M20 .5V10.5M.5 10.5V20" stroke="#fff" stroke-opacity=".05" fill="none"/></pattern>
+      <clipPath id="c-bar"><polygon points="172,225 248,225 240,328 180,328"/></clipPath>
+      <clipPath id="c-pub"><polygon points="183,212 261,212 254,322 190,322"/></clipPath>
+      <clipPath id="c-kafe"><polygon points="272,274 338,274 330,318 280,318"/></clipPath>
+    </defs>
+  </svg>
+
+  <section id="mekanlar">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Mekânınıza göre</span>
+        <h2>Bar, restoran, kafe, pub. <span class="holo">Her birine kendi garsonu.</span></h2>
+        <p>Platform aynı, garson mekânınızı tanır. Kokteyl tarifini de, latte'nin sütünü de, masanın açık hesabını da sizin menünüzden bilir.</p>
+      </div>
+
+      <div class="vtabs" role="tablist" aria-label="Mekân türü">
+        <button class="vtab" role="tab" type="button" id="t-bar" data-v="bar" aria-controls="bar" aria-selected="true" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14l-7 8zM12 13v6M8 19h8M15 3l-2 4"/></svg>Bar</button>
+        <button class="vtab" role="tab" type="button" id="t-restoran" data-v="restoran" aria-controls="restoran" aria-selected="false" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v4a2 2 0 0 0 4 0V3M7 9v12M16 3c-2.2 2-2.2 6.5 0 8.5V21"/></svg>Restoran</button>
+        <button class="vtab" role="tab" type="button" id="t-kafe" data-v="kafe" aria-controls="kafe" aria-selected="false" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 11h1.5a2.5 2.5 0 0 1 0 5H16M8 3v3M12 3v3"/></svg>Kafe</button>
+        <button class="vtab" role="tab" type="button" id="t-pub" data-v="pub" aria-controls="pub" aria-selected="false" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h10v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1zM15 11h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M5 8a2.5 2.5 0 0 1 4-2.2A2.5 2.5 0 0 1 15 8M9 12v5M12 12v5"/></svg>Pub</button>
+      </div>
+
+      <!-- BAR -->
+      <div class="vpanel" id="bar" role="tabpanel" aria-labelledby="t-bar" style="--v1:#D2553F;--v2:#9C1F2A">
+        <div class="stage">
+          <svg viewBox="0 0 400 400" role="img" aria-label="Şişe tezgâhtaki bardağa içki dolduruyor">
+            <g opacity=".5">
+              <line x1="24" y1="112" x2="376" y2="112" stroke="#fff" stroke-opacity=".12"/>
+              <g fill="#E8DCC0" fill-opacity=".16"><rect x="250" y="62" width="16" height="50" rx="4"/><rect x="255" y="48" width="6" height="16"/><rect x="278" y="72" width="20" height="40" rx="5"/><rect x="285" y="58" width="6" height="16"/><rect x="310" y="56" width="14" height="56" rx="4"/><rect x="314" y="42" width="6" height="16"/><rect x="336" y="76" width="22" height="36" rx="6"/><rect x="344" y="64" width="6" height="14"/></g>
+              <g fill="#D9A441" fill-opacity=".18"><rect x="40" y="70" width="18" height="42" rx="5"/><rect x="46" y="56" width="6" height="16"/><rect x="66" y="60" width="14" height="52" rx="4"/><rect x="70" y="46" width="6" height="16"/></g>
+            </g>
+            <rect x="0" y="330" width="400" height="70" fill="url(#g-counter)"/>
+            <rect x="0" y="330" width="400" height="1.5" fill="#fff" fill-opacity=".2"/>
+            <g id="b-glass">
+              <ellipse cx="210" cy="333" rx="44" ry="4" fill="#000" fill-opacity=".45"/>
+              <g clip-path="url(#c-bar)">
+                <rect id="b-liq" x="160" y="328" width="100" height="120" fill="url(#g-cocktail)"/>
+                <g id="b-bub" fill="#fff" fill-opacity=".55"></g>
+                <rect id="b-ice1" x="-11" y="-11" width="22" height="22" rx="5" fill="#fff" fill-opacity=".28" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>
+                <rect id="b-ice2" x="-10" y="-10" width="20" height="20" rx="5" fill="#fff" fill-opacity=".24" stroke="#fff" stroke-opacity=".5" stroke-width="1.2"/>
+              </g>
+              <line id="b-surf" stroke="#fff" stroke-opacity=".6" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M172 225 L180 328 L240 328 L248 225" fill="url(#g-glass)" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linejoin="round"/>
+              <rect x="178" y="325" width="64" height="6" rx="2" fill="#fff" fill-opacity=".25"/>
+              <g transform="translate(246 226)"><circle r="14" fill="#8FC23A"/><circle r="11" fill="#D9F28C"/><path d="M0-11V11M-11 0H11M-7.8-7.8 7.8 7.8M7.8-7.8-7.8 7.8" stroke="#8FC23A" stroke-width="1.2"/></g>
+            </g>
+            <path id="b-stream" fill="none" stroke="#E2553E" stroke-width="5" stroke-linecap="round"/>
+            <path id="b-streamhi" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.2" stroke-linecap="round"/>
+            <g id="b-drops" fill="#E2553E"><circle r="2.2"/><circle r="1.8"/><circle r="1.6"/></g>
+            <g id="b-bottle">
+              <path d="M-9 0h18v6h-2v40c0 10 17 22 17 34v104a6 6 0 0 1-6 6h-36a6 6 0 0 1-6-6V80c0-12 17-24 17-34V6h-2z" fill="url(#g-bottle)" stroke="#fff" stroke-opacity=".25" stroke-width="1.2"/>
+              <rect x="-18" y="86" width="5" height="96" rx="2.5" fill="#fff" fill-opacity=".18"/>
+              <rect x="-24" y="112" width="48" height="46" fill="#F3E7CF"/>
+              <rect x="-24" y="118" width="48" height="4" fill="#9C1F2A"/>
+              <rect x="-15" y="130" width="30" height="3" rx="1.5" fill="#2A211A" fill-opacity=".7"/>
+              <rect x="-11" y="138" width="22" height="2.5" rx="1.25" fill="#2A211A" fill-opacity=".5"/>
+              <rect x="-9" y="0" width="18" height="6" rx="1.5" fill="#9C1F2A"/>
+            </g>
+          </svg>
+          <span class="tag">Bar · gece</span>
+        </div>
+        <div class="vcopy">
+          <span class="label">Bar</span>
+          <h3>Kokteyli anlatan, <em>siparişi alan</em> garson.</h3>
+          <p>Gece kalabalığında misafir garson beklemez. AI garson kokteyllerin içeriğini menüdeki tarifinizden anlatır, siparişi alır ve hesabı arkadaş grubu içinde böler.</p>
+          <div class="vchat">
+            <div class="msg guest" dir="auto">Something not too sweet?</div>
+            <div class="msg ai" dir="auto">Try the Negroni or the Gin Tonic. Both are on the bitter side.</div>
+            <div class="meta"><span>dil: English</span><span class="src">kaynak: işletmenin menüsü</span></div>
+          </div>
+          <ul class="vlist">
+            <li>Kokteyl içeriği ve alerjenler menüden</li>
+            <li>Gece yoğunluğunda garson çağırma</li>
+            <li>Arkadaş grubunda ürün ürün hesap bölme</li>
+            <li>Fiyat listesi ve kuver kuralı tek panelde</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RESTORAN -->
+      <div class="vpanel" id="restoran" role="tabpanel" aria-labelledby="t-restoran" style="--v1:#D9A441;--v2:#D2553F" hidden>
+        <div class="stage">
+          <svg viewBox="0 0 400 400" role="img" aria-label="Servis kapağı kalkıyor, tabaktaki yemekten buhar yükseliyor">
+            <circle cx="49" cy="250" r="46" fill="url(#g-warm)"/>
+            <rect x="0" y="330" width="400" height="70" fill="url(#g-counter)"/>
+            <rect x="0" y="330" width="400" height="1.5" fill="#fff" fill-opacity=".2"/>
+            <rect x="40" y="272" width="18" height="58" rx="3" fill="#EDE6D6"/>
+            <rect x="48" y="264" width="2" height="9" fill="#2A211A"/>
+            <path id="r-flame" d="M0 -16 C6 -8 7 -2 0 4 C-7 -2 -6 -8 0 -16Z" fill="#FFC24A"/>
+            <g>
+              <path d="M318 330 L330 262 H372 L384 330 Z" fill="#F1EBDD"/>
+              <rect x="337" y="270" width="28" height="28" rx="2" fill="#16100B"/>
+              <g fill="#F1EBDD"><rect x="340" y="273" width="7" height="7"/><rect x="355" y="273" width="7" height="7"/><rect x="340" y="288" width="7" height="7"/><rect x="350" y="283" width="3" height="3"/><rect x="356" y="289" width="3" height="3"/><rect x="351" y="291" width="2" height="4"/></g>
+              <g fill="#16100B"><rect x="342" y="275" width="3" height="3"/><rect x="357" y="275" width="3" height="3"/><rect x="342" y="290" width="3" height="3"/></g>
+              <rect x="337" y="306" width="28" height="3" rx="1.5" fill="#D9A441"/>
+              <rect x="341" y="313" width="20" height="2.5" rx="1.25" fill="#7F8A80"/>
+            </g>
+            <ellipse cx="195" cy="333" rx="112" ry="7" fill="#000" fill-opacity=".4"/>
+            <ellipse cx="195" cy="318" rx="106" ry="17" fill="#F1EBDD"/>
+            <ellipse cx="195" cy="316" rx="80" ry="11" fill="#D9D5E4"/>
+            <ellipse cx="195" cy="308" rx="64" ry="10" fill="#C98B55"/>
+            <g>
+              <ellipse cx="160" cy="298" rx="19" ry="9" transform="rotate(-14 160 298)" fill="#8A4A2B"/>
+              <ellipse cx="182" cy="295" rx="19" ry="9" transform="rotate(-14 182 295)" fill="#A05A36"/>
+              <ellipse cx="204" cy="296" rx="19" ry="9" transform="rotate(-14 204 296)" fill="#8A4A2B"/>
+              <ellipse cx="225" cy="299" rx="17" ry="8" transform="rotate(-14 225 299)" fill="#A05A36"/>
+            </g>
+            <path d="M144 296 q14 -8 28 0 t28 0 t28 0" stroke="#D23A2B" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="248" cy="304" rx="18" ry="9" fill="#FBF8F2"/>
+            <path d="M150 290 q20 -22 46 -12" stroke="#4E9A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <circle cx="234" cy="287" r="7" fill="#E04A3A"/>
+            <g fill="#6DBE4A"><circle cx="246" cy="300" r="1.8"/><circle cx="252" cy="304" r="1.5"/><circle cx="242" cy="306" r="1.5"/></g>
+            <g id="r-steam" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round">
+              <path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/><path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/><path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/>
+            </g>
+            <g id="r-spark" fill="#F2D898">
+              <path d="M0-8 2-2 8 0 2 2 0 8-2 2-8 0-2-2Z"/><path d="M0-8 2-2 8 0 2 2 0 8-2 2-8 0-2-2Z"/><path d="M0-8 2-2 8 0 2 2 0 8-2 2-8 0-2-2Z"/><path d="M0-8 2-2 8 0 2 2 0 8-2 2-8 0-2-2Z"/>
+            </g>
+            <g id="r-cloche">
+              <path d="M88 314 C88 250 135 214 195 214 C255 214 302 250 302 314 Z" fill="url(#g-cloche)"/>
+              <path d="M122 292 C124 260 146 238 172 229" stroke="#fff" stroke-opacity=".45" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <rect x="82" y="310" width="226" height="8" rx="4" fill="#A3A1B6"/>
+              <rect x="190" y="204" width="10" height="12" fill="#8D8BA0"/>
+              <ellipse cx="195" cy="202" rx="14" ry="8" fill="url(#g-cloche)"/>
+            </g>
+          </svg>
+          <span class="tag">Restoran · masa 12</span>
+        </div>
+        <div class="vcopy">
+          <span class="label">Restoran</span>
+          <h3>Masaya servisli restoranın <em>dil bilen</em> garsonu.</h3>
+          <p>Turist bölgesinde misafir beş farklı dilde sorabilir. AI garson menüyü anlatır, alerjen sorusuna cevap verir, paylaşımlık öneri yapar ve onaylanan siparişi mutfağa Türkçe düşürür.</p>
+          <div class="vchat">
+            <div class="msg guest" dir="auto">We're two. Something to share?</div>
+            <div class="msg ai" dir="auto">The mixed grill for two is made for sharing. For dessert, one künefe is enough for both of you.</div>
+            <div class="meta"><span>dil: English</span><span class="src">kaynak: işletmenin menüsü</span></div>
+          </div>
+          <ul class="vlist">
+            <li>Çok dilli menü danışmanı</li>
+            <li>Alerjen ve diyet filtresi</li>
+            <li>Mutfağa Türkçe, standart ürün adıyla</li>
+            <li>Hesap masada kapanır</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- KAFE -->
+      <div class="vpanel" id="kafe" role="tabpanel" aria-labelledby="t-kafe" style="--v1:#C98B55;--v2:#D9A441" hidden>
+        <div class="stage">
+          <svg viewBox="0 0 400 400" role="img" aria-label="Barista cam bardağa kahve dolduruyor">
+            <g>
+              <line x1="250" y1="0" x2="250" y2="48" stroke="#fff" stroke-opacity=".25"/>
+              <path d="M232 64 Q250 40 268 64 Z" fill="#2A211A" stroke="#fff" stroke-opacity=".2"/>
+              <circle cx="250" cy="72" r="40" fill="url(#g-warm)"/>
+              <circle cx="250" cy="66" r="5" fill="#F2D898"/>
+              <line x1="350" y1="0" x2="350" y2="28" stroke="#fff" stroke-opacity=".25"/>
+              <path d="M334 44 Q350 22 366 44 Z" fill="#2A211A" stroke="#fff" stroke-opacity=".2"/>
+              <circle cx="350" cy="52" r="34" fill="url(#g-warm)"/>
+              <circle cx="350" cy="47" r="4" fill="#F2D898"/>
+            </g>
+            <rect x="99" y="156" width="22" height="42" rx="9" fill="#D99A70"/>
+            <path d="M40 330 C42 262 50 224 72 208 C86 198 98 194 110 194 C122 194 134 198 148 208 C170 224 178 262 180 330 Z" fill="#3A332C"/>
+            <path d="M98 195 L110 214 L122 195 Z" fill="#D99A70"/>
+            <path d="M72 254 H148 L154 330 H66 Z" fill="#E9A23B"/>
+            <path d="M78 254 L96 200 M142 254 L124 200" stroke="#E9A23B" stroke-width="4" stroke-linecap="round"/>
+            <rect x="95" y="274" width="30" height="20" rx="3" fill="#000" fill-opacity=".15"/>
+            <g id="k-head">
+              <circle cx="84" cy="110" r="12" fill="#2A211A"/>
+              <ellipse cx="92" cy="140" rx="5" ry="7" fill="#D99A70"/>
+              <ellipse cx="112" cy="134" rx="26" ry="30" fill="#E4AB82"/>
+              <path d="M84 132 C82 104 106 92 126 98 C140 102 144 116 140 124 C130 116 112 114 98 124 C94 130 90 138 88 146 Z" fill="#2A211A"/>
+              <path d="M120 134 q4 3 8 0" stroke="#2A211A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M118 125 q5 -3 10 -1" stroke="#2A211A" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M138 138 q5 6 -1 9" stroke="#C98762" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M124 153 q6 4 11 -1" stroke="#8A4A3A" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="130" cy="145" r="4" fill="#F08A7A" fill-opacity=".35"/>
+            </g>
+            <rect x="0" y="330" width="400" height="70" fill="url(#g-counter)"/>
+            <rect x="0" y="330" width="400" height="1.5" fill="#fff" fill-opacity=".2"/>
+            <g id="k-cup">
+              <ellipse cx="305" cy="334" rx="52" ry="5" fill="#000" fill-opacity=".45"/>
+              <ellipse cx="305" cy="324" rx="50" ry="7" fill="#F1EBDD"/>
+              <path d="M335 284 C356 284 356 310 331 310" stroke="#fff" stroke-opacity=".55" stroke-width="5" fill="none"/>
+              <g clip-path="url(#c-kafe)">
+                <rect id="k-cof" x="265" y="318" width="80" height="60" fill="url(#g-coffee)"/>
+                <rect id="k-crema" x="265" y="318" width="80" height="4" fill="#D79B62"/>
+              </g>
+              <path d="M272 274 L280 318 L330 318 L338 274" fill="url(#g-glass)" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linejoin="round"/>
+              <g id="k-steam" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round">
+                <path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/><path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/><path d="M0 0c-5-7 5-13 0-20c-5-7 5-13 0-20"/>
+              </g>
+            </g>
+            <path id="k-stream" fill="none" stroke="#6B3A1E" stroke-width="4.5" stroke-linecap="round"/>
+            <g id="k-arm">
+              <path d="M140 200 L176 236" stroke="#3A332C" stroke-width="22" stroke-linecap="round"/>
+              <path d="M176 236 L205 214" stroke="#E4AB82" stroke-width="15" stroke-linecap="round"/>
+              <path d="M222 186 C200 188 198 222 218 228" stroke="#2A2233" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <path d="M262 228 C288 226 286 192 300 186" stroke="#D08850" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <path d="M224 178 H258 L268 238 Q241 246 214 238 Z" fill="url(#g-copper)"/>
+              <rect x="226" y="186" width="5" height="44" rx="2.5" fill="#fff" fill-opacity=".25"/>
+              <ellipse cx="241" cy="178" rx="18" ry="4" fill="#B87041"/>
+              <circle cx="241" cy="171" r="4" fill="#2A2233"/>
+              <circle cx="208" cy="213" r="9.5" fill="#E4AB82"/>
+            </g>
+          </svg>
+          <span class="tag">Kafe · sabah</span>
+        </div>
+        <div class="vcopy">
+          <span class="label">Kafe</span>
+          <h3>Sıra yok, <em>kasa önünde</em> kalabalık yok.</h3>
+          <p>Yoğun saatlerdeki sipariş darboğazı biter. Misafir oturduğu yerden QR ile sipariş verir, süt ve şeker tercihini sohbetle söyler; barista ekranında net bir fiş görür.</p>
+          <div class="vchat">
+            <div class="msg guest" dir="auto">Yulaf sütlü latte, şekersiz olsun.</div>
+            <div class="msg ai" dir="auto">Not aldım: 1 × Latte, yulaf sütü, şekersiz. Onaylıyor musunuz?</div>
+            <div class="meta"><span>dil: Türkçe</span><span class="src">kaynak: işletmenin menüsü</span></div>
+          </div>
+          <ul class="vlist">
+            <li>Oturduğu yerden QR ile sipariş</li>
+            <li>Süt, şurup, şeker tercihi sohbetle</li>
+            <li>Barista ekranında net fiş</li>
+            <li>Fotoğraftan 30 dakikada menü</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PUB -->
+      <div class="vpanel" id="pub" role="tabpanel" aria-labelledby="t-pub" style="--v1:#E0A33A;--v2:#9CC79B" hidden>
+        <div class="stage">
+          <svg viewBox="0 0 400 400" role="img" aria-label="Musluktan bira bardağına bira dolduruluyor, köpük yükseliyor">
+            <rect x="0" y="0" width="400" height="330" fill="url(#p-brick)"/>
+            <rect x="0" y="330" width="400" height="70" fill="url(#g-counter)"/>
+            <rect x="0" y="330" width="400" height="1.5" fill="#fff" fill-opacity=".2"/>
+            <rect x="130" y="96" width="24" height="234" fill="url(#g-chrome)"/>
+            <rect x="126" y="322" width="32" height="10" rx="3" fill="url(#g-chrome)"/>
+            <rect x="130" y="90" width="102" height="16" rx="8" fill="url(#g-chrome)"/>
+            <rect x="216" y="104" width="12" height="32" rx="3" fill="url(#g-chrome)"/>
+            <rect x="219" y="134" width="6" height="6" rx="1.5" fill="#8D8BA0"/>
+            <g id="p-handle">
+              <rect x="215" y="42" width="14" height="56" rx="6" fill="#2A211A" stroke="#fff" stroke-opacity=".2"/>
+              <rect x="212" y="34" width="20" height="16" rx="5" fill="#FFC24A"/>
+            </g>
+            <rect x="166" y="325" width="112" height="7" rx="2" fill="#3B2E24"/>
+            <g id="p-glass">
+              <ellipse cx="222" cy="334" rx="40" ry="4" fill="#000" fill-opacity=".45"/>
+              <g clip-path="url(#c-pub)">
+                <rect id="p-beer" x="175" y="322" width="95" height="120" fill="url(#g-beer)"/>
+                <g id="p-bub" fill="#FFF3DC" fill-opacity=".7"></g>
+                <rect id="p-foam" x="175" y="322" width="95" height="0" fill="#FFF3DC"/>
+                <g id="p-bumps" fill="#FFF3DC">
+                  <circle cx="186" r="5.5"/><circle cx="195" r="6"/><circle cx="204" r="5.5"/><circle cx="213" r="6"/><circle cx="222" r="5.5"/><circle cx="231" r="6"/><circle cx="240" r="5.5"/><circle cx="249" r="6"/><circle cx="258" r="5.5"/>
+                </g>
+              </g>
+              <path d="M183 212 L190 322 L254 322 L261 212" fill="url(#g-glass)" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M186 240 Q181 252 187 264 M258 240 Q263 252 257 264" stroke="#fff" stroke-opacity=".3" stroke-width="1.5" fill="none"/>
+              <rect x="188" y="319" width="68" height="6" rx="2" fill="#fff" fill-opacity=".25"/>
+              <g fill="#fff" fill-opacity=".3"><circle cx="198" cy="280" r="1.6"/><circle cx="244" cy="296" r="1.3"/><circle cx="238" cy="262" r="1.2"/><circle cx="204" cy="306" r="1.2"/></g>
+            </g>
+            <path id="p-stream" fill="none" stroke="#F5B23C" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <span class="tag">Pub · maç gecesi</span>
+        </div>
+        <div class="vcopy">
+          <span class="label">Pub</span>
+          <h3>Masanın hesabı açık, <em>grup hesabı</em> tek dokunuşla bölünür.</h3>
+          <p>Maç gecesi masalar kalabalık, siparişler peş peşe gelir. Masanın açık hesabı QR'da canlı görünür; yeni tur sohbetle istenir, ayrılan herkes kendi payını öder.</p>
+          <div class="vchat">
+            <div class="msg guest" dir="auto">Noch eine Runde für den Tisch, bitte.</div>
+            <div class="msg ai" dir="auto">Gern: 4 × Fassbier 0,5 l. Bitte bestätigen Sie die Bestellung.</div>
+            <div class="meta"><span>dil: Deutsch</span><span class="src">kaynak: işletmenin menüsü</span></div>
+          </div>
+          <ul class="vlist">
+            <li>Masanın açık hesabı QR'da canlı</li>
+            <li>Yeni tur için tek mesaj</li>
+            <li>Ürün ürün veya eşit hesap bölme</li>
+            <li>Yoğun saatte garson çağırma</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="neden">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Neden şimdi</span>
+        <h2>Kurallar değişti. Masadaki QR artık yalnız başına yetmiyor.</h2>
+      </div>
+      <div class="why">
+        <article class="glow">
+          <span class="k">Kural</span>
+          <h3>Sadece QR menü yetmiyor</h3>
+          <p>Ticaret Bakanlığı yalnızca QR ile sunulan menüyü yasakladı ve denetimleri sıklaştırdı. Basılı fiyat listesi ve listede olmayan ek ücret yasağı artık sıkı takipte.</p>
+        </article>
+        <article class="glow">
+          <span class="k">Yükümlülük</span>
+          <h3>Fiyatlar Bakanlığa bildirilecek</h3>
+          <p>Kriterlere uyan işletmeler fiyat listelerini elektronik olarak Bakanlığa aktarmakla yükümlü olacak. Menü verisini bugünden düzenli tutan işletme hazır olur.</p>
+        </article>
+        <article class="glow">
+          <span class="k">Fırsat</span>
+          <h3>AI ile sipariş daha yeni başlıyor</h3>
+          <p>Misafirle kendi dilinde konuşan ve sipariş alan işletme sayısı hâlâ çok az. Turist trafiği olan bölgelerde bu fark doğrudan masaya yansıyor.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="urun">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Tek veri kaynağı</span>
+        <h2>Fiyatı bir kez değiştirin. <span class="holo">Her yer aynı anda</span> güncellensin.</h2>
+        <p>Enflasyon ortamında fiyat sık değişiyor. Qrocket'te fiyat panelde bir kez girilir; menü, AI garson, basılı liste ve bildirim aynı veriden beslenir.</p>
+      </div>
+      <div class="flow">
+        <div class="src glow">
+          <span class="label">İşletme paneli · fiyat değişikliği</span>
+          <div class="item">Mercimek çorbası</div>
+          <div class="price"><s>140 ₺</s><b>155 ₺</b></div>
+          <p>Değişiklik geçmişi kim, ne zaman, eski ve yeni fiyatla saklanır. Denetimde elinizde kayıt olur.</p>
+        </div>
+        <ul class="outs">
+          <li><span>QR menü</span><span class="tick">güncellendi</span></li>
+          <li><span>AI garson</span><span class="tick">yeni fiyatı okuyor</span></li>
+          <li><span>Basılı fiyat listesi</span><span class="tick">yeniden basım uyarısı</span></li>
+          <li><span>Kapı önü dijital pano</span><span class="tick">güncellendi</span></li>
+          <li><span>Bakanlık bildirimi</span><span class="tick">gönderime hazır</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="mod-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Platform</span>
+        <h2 id="mod-title">Beş modül, tek ekran</h2>
+        <p>QR menü sadece giriş kapısı. Asıl değer uyumda, misafirle konuşan garsonda ve masada kapanan hesapta.</p>
+      </div>
+      <div class="mods">
+        <article class="mod glow">
+          <div class="num">Modül<b>01</b></div>
+          <div class="txt">
+            <h3>Uyum ve mali entegrasyon</h3>
+            <p>Basılı fiyat listesi, ek ücret kontrolü ve Bakanlık bildirimi tek yerden. Sipariş ve ödeme, mevcut entegratörünüz ve ÖKC/POS sağlayıcınız üzerinden doğru mali belgeye bağlanır.</p>
+            <ul><li>A4, A5, masa standı PDF</li><li>Kuver kontrolü</li><li>Fiyat geçmişi</li><li>e-Adisyon / e-arşiv</li></ul>
+          </div>
+          <div class="mini" aria-label="Örnek basılı fiyat listesi">
+            <div class="row"><b>FİYAT LİSTESİ</b><span class="muted">sürüm 14</span></div>
+            <div class="hr"></div>
+            <div class="row"><span>Mercimek çorbası</span><span>155 ₺</span></div>
+            <div class="row"><span>İskender</span><span>420 ₺</span></div>
+            <div class="row"><span>Ayran</span><span>60 ₺</span></div>
+            <div class="row"><span>Kuver</span><span>yok</span></div>
+            <div class="hr"></div>
+            <div class="muted">Basım: 08.10.2026</div>
+          </div>
+        </article>
+
+        <article class="mod glow">
+          <div class="num">Modül<b>02</b></div>
+          <div class="txt">
+            <h3>AI garson</h3>
+            <p>Misafir menüyü gezmek yerine soru sorar. Garson yalnızca işletmenin girdiği menü verisinden cevap verir, bilmediğini uydurmaz ve personeli çağırır. Sipariş, misafir onaylamadan mutfağa gitmez.</p>
+            <ul><li>Menü danışmanı</li><li>Alerjen ve diyet filtresi</li><li>Sohbetle sipariş</li><li>Ölçülü öneri</li></ul>
+          </div>
+          <div class="mini" aria-label="Örnek: misafir dili ve mutfağa düşen sipariş">
+            <div class="row"><span class="muted">misafir</span><span>Deutsch</span></div>
+            <div class="row"><span class="muted">niyet</span><span class="ai">sipariş · glutensiz</span></div>
+            <div class="hr"></div>
+            <div class="row"><span class="muted">mutfağa</span><span>Türkçe</span></div>
+            <div class="row"><span>1 × Izgara köfte</span><span>M12</span></div>
+            <div class="row"><span>Not</span><span>ekmeksiz</span></div>
+          </div>
+        </article>
+
+        <article class="mod glow">
+          <div class="num">Modül<b>03</b></div>
+          <div class="txt">
+            <h3>Masada ödeme, hesap bölme, bahşiş</h3>
+            <p>Masadaki herkes aynı QR'ı okutup kendi payını öder, kalan tutar canlı güncellenir. Para akışı lisanslı ödeme kuruluşu üzerinden geçer. Nakit ve mevcut POS her zaman açık.</p>
+            <ul><li>Eşit veya ürün ürün bölme</li><li>Apple Pay / Google Pay</li><li>İsteğe bağlı bahşiş</li></ul>
+          </div>
+          <div class="mini" aria-label="Örnek hesap bölme">
+            <div class="row"><b>MASA 12</b><span>1.240 ₺</span></div>
+            <div class="split" aria-hidden="true"><i style="width:38%;background:var(--brass)"></i><i style="width:27%;background:var(--sage)"></i></div>
+            <div class="row"><span>Ayşe · çorba, kahve</span><span>470 ₺</span></div>
+            <div class="row"><span>Mert · eşit pay</span><span>335 ₺</span></div>
+            <div class="row muted"><span>Kalan</span><span>435 ₺</span></div>
+          </div>
+        </article>
+
+        <article class="mod glow">
+          <div class="num">Modül<b>04</b></div>
+          <div class="txt">
+            <h3>Geri bildirim ve itibar</h3>
+            <p>Ödemeden sonra 15 saniyelik kısa anket. Puanı ne olursa olsun herkese aynı Google yorum daveti gösterilir; düşük puan gelince personel, misafir hâlâ mekândayken haberdar olur.</p>
+            <ul><li>Misafirin dilinde anket</li><li>Anlık uyarı</li><li>Haftalık AI özeti</li></ul>
+          </div>
+          <div class="mini" aria-label="Örnek değerlendirme ekranı">
+            <div>Servis hızı</div>
+            <div class="stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 15l-5.2 2.7 1-5.9L1.5 7.7l5.9-.8z" fill="#D9A441"/></svg>
+              <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 15l-5.2 2.7 1-5.9L1.5 7.7l5.9-.8z" fill="#D9A441"/></svg>
+              <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 15l-5.2 2.7 1-5.9L1.5 7.7l5.9-.8z" fill="#D9A441"/></svg>
+              <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 15l-5.2 2.7 1-5.9L1.5 7.7l5.9-.8z" fill="#D9A441"/></svg>
+              <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 15l-5.2 2.7 1-5.9L1.5 7.7l5.9-.8z" fill="rgba(30,36,51,.14)"/></svg>
+            </div>
+            <span class="gbtn">Google'da yorum bırak</span>
+            <div class="muted" style="margin-top:6px">Herkese aynı davet</div>
+          </div>
+        </article>
+
+        <article class="mod glow">
+          <div class="num">Modül<b>05</b></div>
+          <div class="txt">
+            <h3>İşletme paneli ve AI analiz</h3>
+            <p>Kâğıt menünüzün fotoğrafını çekin; ürün, kategori ve fiyat çıkarılır, siz onaylarsınız. Hedef 30 dakikada canlı menü. Sonra panel size misafirlerin ne sorduğunu ve neyi bulamadığını gösterir.</p>
+            <ul><li>Fotoğraftan kurulum</li><li>Mutfak ve garson ekranı</li><li>Planlı fiyat değişikliği</li></ul>
+          </div>
+          <div class="mini" aria-label="Örnek panel içgörüsü">
+            <div class="muted">Bu ay AI garsona sorulan</div>
+            <div class="row"><span>Vegan seçenek</span><span class="ai">12 kez</span></div>
+            <div class="row"><span>Glutensiz tatlı</span><span class="ai">7 kez</span></div>
+            <svg class="spark" viewBox="0 0 220 46" preserveAspectRatio="none" aria-hidden="true">
+              <defs><linearGradient id="sp" x1="0" x2="1"><stop offset="0" stop-color="#3E8A5E"/><stop offset="1" stop-color="#EE7A3A"/></linearGradient>
+              <linearGradient id="spf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EE7A3A" stop-opacity=".22"/><stop offset="1" stop-color="#EE7A3A" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0 40 L30 36 L60 38 L90 28 L120 30 L150 20 L180 16 L220 8 L220 46 L0 46Z" fill="url(#spf)"/>
+              <path d="M0 40 L30 36 L60 38 L90 28 L120 30 L150 20 L180 16 L220 8" fill="none" stroke="url(#sp)" stroke-width="2"/>
+              <circle cx="216" cy="9" r="3.5" fill="#EE7A3A"/>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="yol">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Yol haritası</span>
+        <h2>Önce uyum ve AI garson. Sonra ödeme.</h2>
+        <p>Pilotta önce uyum modülünün ve AI garsonun değerini kanıtlıyoruz. Entegrasyon yükü en ağır parça olan ödeme ikinci fazda geliyor.</p>
+      </div>
+      <div class="track">
+        <article class="phase glow now">
+          <header><h3>Faz 1 · Pilot</h3><span class="pill">Şu an</span></header>
+          <ul>
+            <li>QR menü ve fotoğraftan kurulum</li>
+            <li>Basılı fiyat listesi üretici</li>
+            <li>Ek ücret kontrolü</li>
+            <li>AI garson: menü, alerjen, sohbetle sipariş</li>
+            <li>Garson çağırma</li>
+          </ul>
+        </article>
+        <article class="phase glow">
+          <header><h3>Faz 2 · Ödeme</h3><span class="pill">Sırada</span></header>
+          <ul>
+            <li>Masada ödeme</li>
+            <li>Hesap bölme ve bahşiş</li>
+            <li>Saat bazlı fiyat</li>
+            <li>Maliyete göre fiyat önerisi</li>
+          </ul>
+        </article>
+        <article class="phase glow">
+          <header><h3>Faz 3 · Ağ</h3><span class="pill">Sonra</span></header>
+          <ul>
+            <li>Misafir uygulaması ve puan</li>
+            <li>Kayıtlı alerjen profili</li>
+            <li>Çoklu şube fiyat yönetimi</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="katil">
+    <div class="wrap seed">
+      <div>
+        <div class="stamp"><span>Pek</span><span class="holo">yakında.</span></div>
+        <h2>Seed aşamasındayız. Programı yazıyoruz.</h2>
+        <p style="margin-top:18px">Qrocket'i ilk pilot işletmelerle birlikte geliştiriyoruz. Masaya servisli bir restoran ya da kafe işletiyorsanız, özellikle turist trafiği olan bir bölgedeyseniz, sizi pilot listemize almak isteriz.</p>
+        <p>Qrocket, <a href="../index.html" style="color:var(--fg);font-weight:700;text-decoration:none">osplusstudio</a> tarafından geliştiriliyor. Yatırımcı veya iş ortağıysanız da formu doldurun, size dönelim.</p>
+        <div class="facts">
+          <div><span>→</span><span>Pilot işletmelere erken erişim</span></div>
+          <div><span>→</span><span>Kurulumda birebir destek</span></div>
+          <div><span>→</span><span>Ürüne doğrudan geri bildirim</span></div>
+        </div>
+      </div>
+      <form id="signup" class="glow" name="pilot" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="pilot">
+        <p hidden><label>Bunu boş bırakın <input name="bot-field"></label></p>
+        <h3>Lansmanda haber verelim</h3>
+        <div class="two">
+          <div class="field"><label for="f-name">Adınız</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-biz">İşletme adı</label><input id="f-biz" name="business" autocomplete="organization"></div>
+        </div>
+        <div class="field"><label for="f-email">E-posta</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field">
+          <label for="f-role">Siz kimsiniz?</label>
+          <select id="f-role" name="role">
+            <option>Restoran / kafe işletmecisi</option>
+            <option>Yatırımcı</option>
+            <option>İş ortağı / entegratör</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Listeye katıl</button>
+        <p id="form-status" role="status" aria-live="polite"></p>
+        <p class="note">Bilgileriniz yalnızca Qrocket hakkında sizinle iletişim kurmak için kullanılır ve üçüncü kişilerle paylaşılmaz. Ayrıntılar: <a href="gizlilik.html">Gizlilik Politikası</a>.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Qrocket · <a href="../index.html" style="color:var(--fg);font-weight:600;text-decoration:none">osplusstudio</a> tarafından geliştirilmektedir</span>
+    <span><a href="gizlilik.html">Gizlilik Politikası</a> · <a href="mailto:info@osplusstudio.com">info@osplusstudio.com</a></span>
+  </div>
+</footer>
+
+<script>
+// Animations always play, also on devices with reduced-motion turned on (owner's choice)
+var REDUCED = false;
+
+// AI waiter demo
+(function(){
+  var D=[
+    {lang:'EN',name:'English',q:'Is the İskender spicy?',a:"No, it isn't spicy. It's served with tomato sauce, butter and yoghurt. Many guests pair it with ayran."},
+    {lang:'TR',name:'Türkçe',q:'Glutensiz ne var?',a:'Menüde glutensiz olarak işaretli 3 ürün var: Mercimek çorbası, Izgara köfte (ekmeksiz) ve Çoban salata.',warn:'Ciddi bir alerjiniz varsa lütfen personele de bildirin.'},
+    {lang:'DE',name:'Deutsch',q:'Ich habe eine Nussallergie.',a:'Laut Menü enthalten İskender, Mercimek-Suppe und Ayran keine Nüsse.',warn:'Bei einer ernsten Allergie informieren Sie bitte auch unser Personal.'},
+    {lang:'AR',name:'العربية',q:'هل لديكم طبق نباتي؟',a:'نعم، لدينا شوربة العدس وسلطة الراعي.'},
+    {lang:'RU',name:'Русский',q:'Что вы посоветуете?',a:'Попробуйте искендер — он не острый. К нему гости часто берут айран.'},
+    {lang:'TR',name:'Türkçe',q:'Hesabı bölebilir miyiz?',a:'Tabii. Masadaki herkes aynı QR kodu okutup kendi payını ödeyebilir. Eşit mi bölelim, ürün ürün mü?'}
+  ];
+  var tr=document.getElementById('transcript'), con=document.getElementById('console'),
+      st=document.getElementById('state'), chips=[].slice.call(document.querySelectorAll('#chips .chip')),
+      langs=[].slice.call(document.querySelectorAll('#langs span'));
+  var run=0, current=0, auto=!REDUCED, timer=null;
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;e.setAttribute('dir','auto');return e;}
+  function setLang(l){langs.forEach(function(s){s.classList.toggle('on',s.getAttribute('data-l')===l);});}
+  function speaking(on){con.classList.toggle('speaking',on);st.textContent=on?'Masa 12 · yanıtlıyor':'Masa 12 · dinliyor';if(window.__orbSpeed)window.__orbSpeed(on?3.2:1);}
+  function play(i){
+    var my=++run, d=D[i]; current=i;
+    chips.forEach(function(c){c.setAttribute('aria-pressed',String(+c.getAttribute('data-i')===i));});
+    tr.innerHTML=''; setLang(d.lang);
+    tr.appendChild(el('div','msg guest',d.q));
+    var ai=el('div','msg ai'); tr.appendChild(ai);
+    if(REDUCED){ai.textContent=d.a;finish();return;}
+    ai.innerHTML='<span class="thinking"><i></i><i></i><i></i></span>';
+    speaking(true);
+    setTimeout(function(){
+      if(my!==run)return;
+      var txt=d.a, n=0, span=document.createElement('span'), car=document.createElement('span');
+      car.className='caret'; ai.innerHTML=''; ai.appendChild(span); ai.appendChild(car);
+      (function type(){
+        if(my!==run)return;
+        n=Math.min(txt.length,n+2); span.textContent=txt.slice(0,n);
+        if(n<txt.length){setTimeout(type,22);}else{car.remove();finish();}
+      })();
+    },700);
+    function finish(){
+      if(d.warn){ai.appendChild(el('span','warn',d.warn));}
+      var m=el('div','meta'); m.appendChild(el('span',null,'dil: '+d.name)); m.appendChild(el('span','src','kaynak: işletmenin menüsü'));
+      tr.appendChild(m); speaking(false);
+      if(auto){clearTimeout(timer);timer=setTimeout(function(){if(auto&&my===run)play((current+1)%D.length);},4200);}
+    }
+  }
+  chips.forEach(function(c){c.addEventListener('click',function(){auto=false;clearTimeout(timer);play(+c.getAttribute('data-i'));});});
+  if(auto){timer=setTimeout(function(){play(1);},4500);}
+})();
+
+// Venue scenes: bar pour, restaurant cloche, cafe barista, pub tap
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function E(id){return document.getElementById(id);}
+  function A(el,o){for(var k in o)el.setAttribute(k,o[k]);}
+  function cl(x){return x<0?0:x>1?1:x;}
+  function ease(x){x=cl(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+  function eout(x){x=cl(x);return 1-Math.pow(1-x,2);}
+  function lerp(a,b,k){return a+(b-a)*k;}
+  // shared pour timeline (seconds): tilt in 0–1, pour 1–4.2, tilt back 4.2–5, serve 5.8–6.5, new glass 6.5–7.2
+  function pourK(u){return u<1?ease(u):u<4.2?1:u<5?1-ease((u-4.2)/.8):0;}
+  function fillL(u,max){return u<1.15?0:u<4.3?max*eout((u-1.15)/3.15):max;}
+  function serve(u){
+    if(u>=5.8&&u<6.5){var s=ease((u-5.8)/.7);return {x:170*s,o:1-s,r:false};}
+    if(u>=6.5)return {x:0,o:ease((u-6.5)/.7),r:true};
+    return {x:0,o:1,r:false};
+  }
+  function stream(el,x,y1,y2,u,p0,p1,hi){
+    var len=y2-y1, show=len>0&&u>=p0&&u<=p1+.3;
+    var end=y1+Math.min(1,(u-p0)/.25)*len, top=y1+Math.max(0,(u-p1)/.3)*len;
+    if(!show||end<=top+1){el.style.opacity=0;if(hi)hi.style.opacity=0;return;}
+    var w=Math.sin(u*31)*1.3, d='M'+x+' '+top+' Q'+(x+w+1.5)+' '+((top+end)/2)+' '+(x+.5)+' '+end;
+    el.setAttribute('d',d);el.style.opacity=1;
+    if(hi){hi.setAttribute('d','M'+(x-1)+' '+top+' Q'+(x+w)+' '+((top+end)/2)+' '+(x-.5)+' '+end);hi.style.opacity=1;}
+  }
+  function bubbles(g,n,x0,x1){
+    var list=[];
+    for(var i=0;i<n;i++){var c=document.createElementNS(NS,'circle');c.setAttribute('r',(1.2+((i*7)%5)*.3).toFixed(1));g.appendChild(c);list.push({el:c,x:x0+((i*37)%100)/100*(x1-x0),ph:i/n,sp:.35+((i*13)%7)/20});}
+    return function(bottom,top,u,show){
+      list.forEach(function(b){
+        if(!show||bottom-top<6){b.el.style.opacity=0;return;}
+        var p=(u*b.sp+b.ph)%1;
+        A(b.el,{cx:(b.x+Math.sin(u*3+b.ph*9)*1.5).toFixed(1),cy:(bottom-p*(bottom-top-3)).toFixed(1)});
+        b.el.style.opacity=(Math.sin(p*Math.PI)).toFixed(2);
+      });
+    };
+  }
+
+  var S={};
+
+  S.bar={T:7.2,rest:3.0,init:function(){
+    this.g=E('b-glass');this.liq=E('b-liq');this.surf=E('b-surf');this.i1=E('b-ice1');this.i2=E('b-ice2');
+    this.st=E('b-stream');this.hi=E('b-streamhi');this.bt=E('b-bottle');this.drops=[].slice.call(E('b-drops').children);
+    this.bub=bubbles(E('b-bub'),9,186,234);
+  },update:function(u){
+    var k=pourK(u);
+    A(this.bt,{transform:'translate('+lerp(95,196,k).toFixed(1)+' '+lerp(140,150,k).toFixed(1)+') rotate('+lerp(0,128,k).toFixed(1)+')'});
+    var s=serve(u), L=s.r?0:fillL(u,.78), sy=328-L*103;
+    A(this.g,{transform:'translate('+s.x.toFixed(1)+' 0)'});this.g.style.opacity=s.o;
+    A(this.liq,{y:sy.toFixed(1)});
+    var lx=172+(sy-225)/103*8, rx=248-(sy-225)/103*8;
+    A(this.surf,{x1:(lx+2).toFixed(1),x2:(rx-2).toFixed(1),y1:sy.toFixed(1),y2:sy.toFixed(1)});this.surf.style.opacity=L>.02?1:0;
+    A(this.i1,{transform:'translate(191 '+Math.min(316,sy-4+Math.sin(u*2)*1.5).toFixed(1)+') rotate('+(12+Math.sin(u*1.7)*5).toFixed(1)+')'});
+    A(this.i2,{transform:'translate(215 '+Math.min(311,sy-1+Math.cos(u*2.2)*1.5).toFixed(1)+') rotate('+(-10+Math.cos(u*1.4)*5).toFixed(1)+')'});
+    this.bub(326,sy,u,L>.08);
+    stream(this.st,197,154,sy,u,1,4.2,this.hi);
+    var pouring=u>1.25&&u<4.4;
+    this.drops.forEach(function(d,i){
+      if(!pouring){d.style.opacity=0;return;}
+      A(d,{cx:(197+(i-1)*8+Math.sin(u*7+i)*2).toFixed(1),cy:(sy-3-Math.abs(Math.sin(u*9+i*2.1))*10).toFixed(1)});d.style.opacity=.9;
+    });
+  }};
+
+  S.pub={T:7.2,rest:3.2,init:function(){
+    this.g=E('p-glass');this.beer=E('p-beer');this.foam=E('p-foam');this.bumps=[].slice.call(E('p-bumps').children);
+    this.st=E('p-stream');this.h=E('p-handle');this.bub=bubbles(E('p-bub'),12,192,252);
+  },update:function(u){
+    var k=pourK(u);
+    A(this.h,{transform:'rotate('+lerp(0,32,k).toFixed(1)+' 222 98)'});
+    var s=serve(u), L=s.r?0:fillL(u,.8), top=322-L*110, f=L<=0?0:Math.min(16,3+L*20);
+    A(this.g,{transform:'translate('+s.x.toFixed(1)+' 0)'});this.g.style.opacity=s.o;
+    A(this.beer,{y:top.toFixed(1)});A(this.foam,{y:(top-f).toFixed(1),height:f.toFixed(1)});
+    var self=this;
+    this.bumps.forEach(function(b,i){A(b,{cy:(top-f+Math.sin(u*2+i)*.8).toFixed(1)});b.style.opacity=L>.03?1:0;});
+    this.bub(320,top,u,L>.05);
+    stream(this.st,222,140,top-f,u,1,4.2);
+  }};
+
+  S.kafe={T:7.2,rest:3.0,init:function(){
+    this.arm=E('k-arm');this.head=E('k-head');this.cup=E('k-cup');this.cof=E('k-cof');this.crema=E('k-crema');
+    this.st=E('k-stream');this.steam=[].slice.call(E('k-steam').children);
+  },update:function(u){
+    var k=pourK(u), th=lerp(0,24,k), r=th*Math.PI/180;
+    A(this.arm,{transform:'rotate('+th.toFixed(2)+' 140 200)'});
+    A(this.head,{transform:'rotate('+lerp(0,6,k).toFixed(2)+' 110 168)'});
+    var tx=140+160*Math.cos(r)+14*Math.sin(r), ty=200+160*Math.sin(r)-14*Math.cos(r);
+    var s=serve(u), L=s.r?0:fillL(u,.82), cy=318-L*44;
+    A(this.cup,{transform:'translate('+s.x.toFixed(1)+' 0)'});this.cup.style.opacity=s.o;
+    A(this.cof,{y:cy.toFixed(1)});A(this.crema,{y:(cy-1).toFixed(1)});this.crema.style.opacity=L>.03?1:0;
+    stream(this.st,tx.toFixed(1)*1,ty+3,cy,u,1,4.2);
+    var base=.08+L*.6;
+    this.steam.forEach(function(p,i){
+      var ph=(u*.45+i/3)%1;
+      A(p,{transform:'translate('+(292+i*13)+' '+(268-ph*40).toFixed(1)+')'});
+      p.style.opacity=(base*Math.sin(ph*Math.PI)).toFixed(2);
+    });
+  }};
+
+  S.restoran={T:7,rest:3.0,init:function(){
+    this.c=E('r-cloche');this.steam=[].slice.call(E('r-steam').children);this.sp=[].slice.call(E('r-spark').children);this.fl=E('r-flame');
+  },update:function(u){
+    var lift=u<.8?0:u<1.8?ease(u-.8):u<5.2?1:u<6.2?1-ease(u-5.2):0;
+    var bob=Math.sin(u*2.4)*3*lift;
+    A(this.c,{transform:'translate(0 '+(-130*lift+bob).toFixed(1)+') rotate('+(-10*lift).toFixed(2)+' 195 314)'});
+    this.steam.forEach(function(p,i){
+      var ph=(u*.4+i/3)%1;
+      A(p,{transform:'translate('+(172+i*24)+' '+(284-ph*46).toFixed(1)+')'});
+      p.style.opacity=(lift*.55*Math.sin(ph*Math.PI)).toFixed(2);
+    });
+    var pos=[[112,226],[282,236],[150,184],[246,176]];
+    this.sp.forEach(function(p,i){
+      var a=lift*(.35+.65*Math.abs(Math.sin(u*2.6+i*1.3)));
+      A(p,{transform:'translate('+pos[i][0]+' '+pos[i][1]+') scale('+(.6+a*.6).toFixed(2)+') rotate('+(u*40+i*20).toFixed(1)+')'});
+      p.style.opacity=a.toFixed(2);
+    });
+    A(this.fl,{transform:'translate(49 262) scale('+(1+Math.sin(u*17)*.07).toFixed(3)+' '+(1+Math.sin(u*13+1)*.12).toFixed(3)+')'});
+  }};
+
+  Object.keys(S).forEach(function(n){try{S[n].init();S[n].update(S[n].rest);}catch(err){}});
+
+  var tabs=[].slice.call(document.querySelectorAll('.vtab')), cur='bar',
+      t0=performance.now()-S.bar.rest*1000, onScreen=true;
+  function select(name,focus){
+    if(!S[name])return;
+    tabs.forEach(function(t){
+      var on=t.getAttribute('data-v')===name;
+      t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;
+      E(t.getAttribute('aria-controls')).hidden=!on;
+      if(on&&focus)t.focus();
+    });
+    cur=name;t0=performance.now();
+    if(!running){try{S[name].update(S[name].rest);}catch(err){}}
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){select(t.getAttribute('data-v'));});
+    t.addEventListener('keydown',function(e){
+      var j=null;
+      if(e.key==='ArrowRight')j=(i+1)%tabs.length;else if(e.key==='ArrowLeft')j=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')j=0;else if(e.key==='End')j=tabs.length-1;
+      if(j!==null){e.preventDefault();select(tabs[j].getAttribute('data-v'),true);}
+    });
+  });
+  var h=(location.hash||'').slice(1);
+  if(S[h]){select(h);t0=performance.now()-S[h].rest*1000;}
+  var running=false;
+  function run(){
+    if(running)return; running=true; t0=performance.now();
+    (function loop(now){
+      if(!document.hidden){var sc=S[cur];try{sc.update(((now-t0)/1000)%sc.T);}catch(err){}}
+      requestAnimationFrame(loop);
+    })(performance.now());
+  }
+  run();
+})();
+
+// Cursor glow on glass cards
+document.querySelectorAll('.glow').forEach(function(g){
+  g.addEventListener('pointermove',function(e){var r=g.getBoundingClientRect();g.style.setProperty('--mx',(e.clientX-r.left)+'px');g.style.setProperty('--my',(e.clientY-r.top)+'px');});
+});
+
+// Sign-up form: Netlify Forms (Netlify panelinde "Forms > Enable form detection" açık olmalı)
+document.getElementById('signup').addEventListener('submit',function(e){
+  e.preventDefault();
+  var form=e.target, f=form.elements, st=document.getElementById('form-status');
+  var name=f.name.value.trim(), email=f.email.value.trim();
+  if(!name){st.textContent='Lütfen adınızı yazın.';f.name.focus();return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){st.textContent='Lütfen geçerli bir e-posta adresi yazın.';f.email.focus();return;}
+  st.textContent='Gönderiliyor…';
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()})
+  .then(function(r){if(!r.ok)throw 0;st.textContent='Teşekkürler, listedesiniz. Lansmanda size yazacağız.';form.reset();})
+  .catch(function(){st.textContent='Gönderilemedi. Lütfen info@osplusstudio.com adresine yazın.';});
+});
+</script>
+
+</body>
+</html>
