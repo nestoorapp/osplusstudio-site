@@ -1,0 +1,103 @@
+/* Ürün oyun sahneleri: izometrik canvas + oyun arayüzü (HUD). Her uygulama kendi renklerini --g-* ile verir. */
+.game{
+  --g-card:#FFF8EC; --g-ink:#4A3626; --g-soft:#8A6F55; --g-accent:#E07A3A; --g-ok:#3F9B57; --g-line:rgba(74,54,38,.22);
+  position:relative; aspect-ratio:16/10; border-radius:24px; overflow:hidden; isolation:isolate;
+  background:linear-gradient(#FBE3C4 0%,#F6CFA6 38%,#E9B98F 100%);
+  font-family:"Figtree",system-ui,sans-serif; color:var(--g-ink); user-select:none; cursor:pointer;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.45);
+}
+.game canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+.game .hud{position:absolute; inset:0; pointer-events:none; padding:clamp(10px,1.8vw,18px); font-size:clamp(11px,1.15vw,14px)}
+.g-card{background:var(--g-card); border-radius:14px; box-shadow:0 6px 0 rgba(74,54,38,.18),0 10px 24px rgba(74,54,38,.18); position:relative}
+.g-card::after{content:""; position:absolute; inset:4px; border:1.5px dashed var(--g-line); border-radius:11px; pointer-events:none}
+
+.g-top{position:absolute; left:clamp(10px,1.8vw,18px); top:clamp(10px,1.8vw,18px); display:flex; gap:10px}
+.g-quest{display:flex; align-items:center; gap:10px; padding:10px 14px 12px 10px; min-width:13.5em}
+.g-quest .ic{width:3.2em; height:3.2em; flex:none; border-radius:50%; display:grid; place-items:center; background:#F3E3C8; overflow:hidden}
+.g-quest .ic img{width:118%; height:118%; object-fit:contain}
+.g-quest b{display:block; font:800 1.18em/1.1 "Bricolage Grotesque",sans-serif; letter-spacing:-.01em}
+.g-quest small{display:block; color:var(--g-soft); font-weight:600; font-size:.82em; margin-top:2px}
+.g-bar{height:.55em; border-radius:99px; background:#EADBC4; margin-top:6px; overflow:hidden}
+.g-bar i{display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#5DB874,#3F9B57); transition:width .25s linear}
+.g-quest .tag{position:absolute; right:10px; bottom:-9px; z-index:1; background:var(--g-accent); color:#fff; font:800 .78em/1 "Figtree",sans-serif; padding:4px 8px; border-radius:99px}
+
+.g-right{position:absolute; right:clamp(10px,1.8vw,18px); top:clamp(10px,1.8vw,18px); display:grid; justify-items:end; gap:8px}
+.g-brand{background:#7A4A2B; color:#FCE6B8; font:800 .82em/1 "Figtree",sans-serif; padding:6px 10px; border-radius:8px; box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.g-ring{width:5.6em; height:5.6em; border-radius:50%; background:var(--g-card); box-shadow:0 0 0 5px #7A4A2B,0 8px 20px rgba(74,54,38,.3); display:grid; place-items:center; position:relative}
+.g-ring svg{position:absolute; inset:0; width:100%; height:100%}
+.g-ring circle{fill:#D9C6A8; transition:fill .15s}
+.g-ring circle.on{fill:#3F9B57}
+.g-ring circle.last{fill:#F2C14E}
+.g-ring circle.imame{fill:#7A4A2B}
+.g-ring b{font:800 1.25em/1 "Bricolage Grotesque",sans-serif}
+.g-pill{display:flex; align-items:center; gap:7px; background:var(--g-card); padding:6px 12px 6px 7px; border-radius:99px; font-weight:800; box-shadow:0 3px 0 rgba(74,54,38,.18)}
+.g-pill .dot{width:1.3em; height:1.3em; border-radius:50%; background:radial-gradient(circle at 35% 35%,#FFE08A,#E3A21A); box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+.g-pill .dot.tree{background:radial-gradient(circle at 35% 35%,#8FD98F,#2F8F4E)}
+.g-pill.hot{background:var(--g-accent); color:#fff; box-shadow:0 3px 0 rgba(0,0,0,.18)}
+
+.g-player{position:absolute; left:clamp(10px,1.8vw,18px); bottom:clamp(10px,1.8vw,18px); display:flex; align-items:center; gap:12px; padding:10px 16px 10px 10px}
+.g-player .av{width:3.6em; height:3.6em; border-radius:50%; flex:none; background:#F3E3C8; box-shadow:inset 0 0 0 3px #E2CBA6; overflow:hidden}
+.g-player .av img{width:100%; height:auto; transform:translateY(4%) scale(1.9); transform-origin:50% 0}
+.g-player b{font:800 1.3em/1 "Bricolage Grotesque",sans-serif}
+.g-player .chip{display:inline-block; margin-top:5px; background:#F3E3C8; border-radius:99px; padding:3px 9px; font-weight:700; font-size:.85em}
+.g-player small{display:block; color:var(--g-soft); font-weight:600; margin-top:4px; font-size:.82em}
+
+.g-keys{position:absolute; right:clamp(10px,1.8vw,18px); bottom:clamp(10px,1.8vw,18px); display:grid; justify-items:end; gap:8px}
+.g-key{display:flex; align-items:center; gap:8px; background:var(--g-card); border-radius:99px; padding:6px 7px 6px 14px; font-weight:700; border:1.5px dashed var(--g-line); box-shadow:0 3px 0 rgba(74,54,38,.14)}
+.g-key kbd{font:800 .85em/1 "Figtree",sans-serif; background:#fff; border:1px solid #D9C6A8; border-bottom-width:3px; border-radius:7px; padding:4px 8px}
+
+.g-toast{position:absolute; left:50%; bottom:clamp(14px,2.4vw,24px); transform:translate(-50%,10px) scale(.92); opacity:0; text-align:center; background:var(--g-card); border-radius:16px; padding:10px 20px 12px; box-shadow:0 6px 0 rgba(74,54,38,.18),0 14px 30px rgba(74,54,38,.25); transition:opacity .35s ease,transform .45s cubic-bezier(.2,1.5,.4,1); white-space:nowrap}
+.g-toast.show{opacity:1; transform:translate(-50%,0) scale(1)}
+.g-toast small{display:block; color:var(--g-accent); font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:.72em}
+.g-toast b{display:block; font:800 1.45em/1.15 "Bricolage Grotesque",sans-serif}
+.g-toast span{display:block; color:var(--g-soft); font-weight:600; font-size:.9em}
+
+/* Nestor teması: şarap koyusu deniz, safran ve mermer (uygulamanın paleti) */
+.game.nestor{
+  --g-card:#3B1E35; --g-ink:#F4E8E4; --g-soft:#BFA6B6; --g-accent:#E5A93A; --g-line:rgba(244,232,228,.16);
+  background:linear-gradient(#1C1219 0%,#2A1424 45%,#3B1E35 100%);
+  font-family:"Alegreya",Georgia,serif;
+}
+.game.nestor .g-card{box-shadow:0 5px 0 rgba(0,0,0,.35),0 12px 26px rgba(0,0,0,.35)}
+.game.nestor b, .game.nestor .g-toast b{font-family:"Marcellus",Georgia,serif; font-weight:400; letter-spacing:0}
+.game.nestor .g-quest .ic, .game.nestor .g-player .av, .game.nestor .g-player .chip{background:#2A1424}
+.game.nestor .g-bar{background:#5A3452}
+.game.nestor .g-bar i{background:linear-gradient(90deg,#E5A93A,#F2C66A)}
+.game.nestor .g-quest .tag{color:#2A1424}
+.game.nestor .g-brand{background:#E5A93A; color:#2A1424}
+.game.nestor .g-ring{background:#3B1E35; box-shadow:0 0 0 5px #E5A93A,0 8px 20px rgba(0,0,0,.4)}
+.game.nestor .g-ring circle{fill:#5A3452}
+.game.nestor .g-ring circle.on{fill:#E5A93A}
+.game.nestor .g-ring circle.last{fill:#F4E8E4}
+.game.nestor .g-pill{box-shadow:0 3px 0 rgba(0,0,0,.3)}
+.game.nestor .g-pill .dot.seal{background:radial-gradient(circle at 35% 35%,#C9E2D8,#8DB8A9); box-shadow:inset 0 0 0 2px #2A1424}
+.game.nestor .g-pill.hot{color:#2A1424}
+.game.nestor .g-player .av{box-shadow:inset 0 0 0 3px #5A3452}
+.game.nestor .g-player .av img{transform:translateY(6%) scale(1.15); transform-origin:50% 50%}
+.game.nestor .g-key kbd{background:#2A1424; color:#F4E8E4; border-color:#5A3452}
+
+/* QRoket teması: krem zemin, lacivert yazı, turuncu vurgu (qroket.com) */
+.game.qrocket{
+  --g-card:#FFFFFF; --g-ink:#1E2433; --g-soft:#535B6B; --g-accent:#EE7A3A; --g-line:rgba(30,36,51,.14);
+  background:linear-gradient(#FBF8F3 0%,#F8EBDD 55%,#F2D9C0 100%);
+}
+.game.qrocket .g-card{box-shadow:0 5px 0 rgba(30,36,51,.12),0 12px 26px rgba(30,36,51,.14)}
+.game.qrocket b, .game.qrocket .g-toast b{font-family:"Young Serif",Georgia,serif; font-weight:400; letter-spacing:0}
+.game.qrocket .g-quest .ic, .game.qrocket .g-player .av, .game.qrocket .g-player .chip{background:#F3EEE6}
+.game.qrocket .g-player .av{display:grid; place-items:center; box-shadow:inset 0 0 0 3px #EADFD0}
+.game.qrocket .g-player .av svg{width:62%}
+.game.qrocket .g-bar{background:#F3EEE6}
+.game.qrocket .g-bar i{background:linear-gradient(90deg,#F6A066,#EE7A3A)}
+.game.qrocket .g-brand{background:#1E2433; color:#FBF8F3}
+.game.qrocket .g-ring{background:#FFFFFF; box-shadow:0 0 0 5px #1E2433,0 8px 20px rgba(30,36,51,.25)}
+.game.qrocket .g-ring circle{transition:fill .3s}
+.game.qrocket .g-pill .dot.tip{background:radial-gradient(circle at 35% 35%,#8FD9A8,#3E8A5E)}
+.game.qrocket .g-key kbd{font-family:"IBM Plex Mono",monospace}
+
+@media (max-width:760px){
+  .game{aspect-ratio:5/6}
+  .game .hud{font-size:9.5px}
+  .g-top .g-quest:nth-child(2), .g-keys, .g-brand, .g-player{display:none}
+  .g-quest{min-width:0}
+  .g-ring{width:4.8em; height:4.8em; box-shadow:0 0 0 4px #7A4A2B,0 6px 14px rgba(74,54,38,.3)}
+}
